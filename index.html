@@ -3,204 +3,568 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Drop Multimedia — Catálogo por secciones</title>
-  <meta name="description" content="Catálogo minimalista de Drop Multimedia con secciones separadas para anime, juegos, películas y series." />
+  <title>Drop Multimedia — Catálogo</title>
+  <meta name="description" content="Catálogo de Drop Multimedia con páginas separadas para anime, juegos, películas y series, además de búsqueda global." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#f2ede3;
-      --paper:#f7f3ea;
-      --ink:#151515;
+      --bg:#f3eee5;
+      --panel:#fffdf9;
+      --ink:#161616;
       --muted:#6f6a62;
-      --line:rgba(21,21,21,.12);
-      --line-strong:rgba(21,21,21,.22);
+      --line:rgba(22,22,22,.10);
+      --line-strong:rgba(22,22,22,.18);
       --accent:#7a3e2f;
-      --accent-soft:#ead7cb;
+      --accent-soft:#ecd9ce;
       --shadow:0 18px 50px rgba(28,18,10,.08);
-      --max:1220px;
-      --nav-h:74px;
+      --max:1240px;
     }
+
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
       margin:0;
-      background:
-        radial-gradient(circle at top left, rgba(122,62,47,.05), transparent 20%),
-        linear-gradient(180deg, #f4efe7 0%, #f2ede3 100%);
-      color:var(--ink);
       font-family:"Manrope", sans-serif;
-      overflow-x:hidden;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(122,62,47,.06), transparent 22%),
+        linear-gradient(180deg, #f6f1e8 0%, #f3eee5 100%);
     }
+
     a{text-decoration:none;color:inherit}
     button,input{font:inherit}
-    .wrap{width:min(calc(100% - 2rem), var(--max));margin-inline:auto}
+
+    .wrap{
+      width:min(calc(100% - 1rem), var(--max));
+      margin-inline:auto;
+    }
+
     .topbar{
-      position:sticky;top:0;z-index:40;height:var(--nav-h);
-      background:rgba(247,243,234,.88);backdrop-filter:blur(14px);
+      position:sticky;
+      top:0;
+      z-index:60;
       border-bottom:1px solid var(--line);
+      background:rgba(255,251,245,.92);
+      backdrop-filter:blur(14px);
     }
+
     .topbar-inner{
-      height:100%;display:flex;align-items:center;justify-content:space-between;gap:1rem;
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      gap:1rem;
+      align-items:center;
+      padding:.8rem 0;
     }
-    .brand{display:flex;flex-direction:column;justify-content:center;min-width:0}
-    .brand strong{font-family:"DM Serif Display", serif;font-size:1.6rem;line-height:1}
-    .brand span{color:var(--muted);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;margin-top:.28rem}
-    .nav-links{display:flex;gap:.55rem;flex-wrap:wrap;justify-content:flex-end}
-    .nav-links a,.nav-links button,.chip{
-      border:1px solid var(--line);background:rgba(255,255,255,.45);color:var(--ink);
-      padding:.8rem 1rem;border-radius:999px;font-weight:700;transition:.22s ease;cursor:pointer;
+
+    .brand strong{
+      display:block;
+      font-family:"DM Serif Display", serif;
+      font-size:1.55rem;
+      font-weight:400;
+      line-height:1;
     }
-    .nav-links a:hover,.nav-links button:hover,.chip:hover,.chip.active{
-      background:var(--accent-soft);border-color:rgba(122,62,47,.25);transform:translateY(-1px);
+
+    .brand span{
+      display:block;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-size:.72rem;
+      margin-top:.25rem;
     }
-    .hero{padding:clamp(2rem, 5vw, 4rem) 0 1.5rem}
-    .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:1rem}
+
+    .global-search{
+      display:flex;
+      align-items:center;
+      gap:.75rem;
+      min-width:0;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.86);
+      border-radius:999px;
+      padding:.6rem .85rem;
+      box-shadow:var(--shadow);
+    }
+
+    .global-search input{
+      width:100%;
+      min-width:0;
+      border:none;
+      outline:none;
+      background:transparent;
+      color:var(--ink);
+      font-weight:700;
+    }
+
+    .global-search input::placeholder{color:#867f76}
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:.5rem;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .nav-btn{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.72);
+      padding:.72rem .95rem;
+      border-radius:999px;
+      font-weight:700;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .nav-btn:hover,
+    .nav-btn.active{
+      background:var(--accent-soft);
+      border-color:rgba(122,62,47,.22);
+      transform:translateY(-1px);
+    }
+
+    .hero{
+      padding:1.1rem 0 1.4rem;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:1rem;
+    }
+
     .panel{
-      border:1px solid var(--line);border-radius:28px;background:rgba(255,255,255,.52);box-shadow:var(--shadow);
+      background:rgba(255,255,255,.7);
+      border:1px solid var(--line);
+      border-radius:28px;
+      box-shadow:var(--shadow);
     }
+
     .hero-main{
-      padding:clamp(1.3rem, 3vw, 2rem);min-height:430px;display:flex;flex-direction:column;justify-content:space-between;
+      padding:1.35rem;
+      min-height:310px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
     }
+
+    .hero-side{
+      padding:1rem;
+      display:grid;
+      gap:1rem;
+    }
+
     .eyebrow{
-      display:inline-flex;align-items:center;gap:.55rem;color:var(--accent);font-weight:800;
-      letter-spacing:.14em;text-transform:uppercase;font-size:.76rem;
+      display:inline-flex;
+      align-items:center;
+      gap:.55rem;
+      color:var(--accent);
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-size:.75rem;
+      font-weight:800;
     }
-    .eyebrow::before{content:"";width:34px;height:1px;background:currentColor}
+
+    .eyebrow::before{
+      content:"";
+      width:28px;
+      height:1px;
+      background:currentColor;
+    }
+
     h1{
-      margin:.8rem 0 1rem;font-family:"DM Serif Display", serif;
-      font-size:clamp(3rem, 7vw, 5.6rem);line-height:.92;max-width:11ch;font-weight:400;
+      margin:.75rem 0 1rem;
+      font-family:"DM Serif Display", serif;
+      font-size:clamp(2.7rem, 7vw, 5rem);
+      line-height:.94;
+      font-weight:400;
+      max-width:10ch;
     }
-    .hero-main p{margin:0;max-width:62ch;color:#27231f;font-size:1rem;line-height:1.7}
-    .hero-actions{margin-top:1.3rem;display:flex;gap:.8rem;flex-wrap:wrap}
-    .primary{background:var(--ink);color:#fff;border-color:var(--ink)}
-    .primary:hover{background:#000;border-color:#000}
-    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-top:1.3rem}
+
+    .hero-main p{
+      margin:0;
+      max-width:60ch;
+      color:#2a2623;
+      line-height:1.7;
+    }
+
+    .hero-actions{
+      margin-top:1rem;
+      display:flex;
+      gap:.7rem;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.75);
+      color:var(--ink);
+      padding:.78rem 1rem;
+      border-radius:999px;
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    .btn.primary{
+      background:var(--ink);
+      color:#fff;
+      border-color:var(--ink);
+    }
+
+    .stats{
+      margin-top:1.2rem;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:.8rem;
+    }
+
     .stat{
-      padding:1rem;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.55);
+      padding:1rem;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.82);
     }
+
     .stat strong{
-      display:block;font-family:"DM Serif Display", serif;font-size:1.7rem;line-height:1;margin-bottom:.2rem;
+      display:block;
+      font-family:"DM Serif Display", serif;
+      font-size:1.7rem;
+      line-height:1;
+      font-weight:400;
+      margin-bottom:.2rem;
     }
-    .stat span{color:var(--muted);font-size:.9rem}
-    .hero-side{padding:1rem;display:grid;gap:1rem}
+
+    .stat span{
+      color:var(--muted);
+      font-size:.9rem;
+    }
+
     .note{
-      padding:1rem;border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.55);
+      padding:1rem;
+      border:1px solid var(--line);
+      border-radius:20px;
+      background:rgba(255,255,255,.82);
     }
-    .note h3{margin:.1rem 0 .45rem;font-family:"DM Serif Display", serif;font-size:1.5rem;font-weight:400}
-    .note p{margin:0;color:var(--muted);line-height:1.6}
-    .section-links{padding:1rem 0 2rem}
-    .section-head{
-      display:flex;justify-content:space-between;align-items:end;gap:1rem;margin-bottom:1rem;
+
+    .note h3{
+      margin:.1rem 0 .4rem;
+      font-family:"DM Serif Display", serif;
+      font-weight:400;
+      font-size:1.35rem;
     }
-    .section-head h2{
-      margin:0;font-family:"DM Serif Display", serif;font-size:clamp(2rem, 4vw, 3.2rem);font-weight:400;
+
+    .note p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.65;
     }
-    .section-head p{margin:0;color:var(--muted);max-width:46ch;line-height:1.6}
-    .portal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+
+    .section-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:1rem;
+      padding:0 0 1.6rem;
+    }
+
     .portal{
-      padding:1.15rem;border-radius:24px;border:1px solid var(--line);background:rgba(255,255,255,.58);
-      box-shadow:var(--shadow);transition:.24s ease;min-height:210px;display:flex;flex-direction:column;justify-content:space-between;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      min-height:180px;
+      padding:1rem;
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:rgba(255,255,255,.78);
+      box-shadow:var(--shadow);
+      transition:.2s ease;
+      cursor:pointer;
     }
-    .portal:hover{transform:translateY(-4px);border-color:var(--line-strong);background:#fff}
-    .portal small{color:var(--accent);text-transform:uppercase;letter-spacing:.14em;font-weight:800}
-    .portal h3{margin:.5rem 0;font-family:"DM Serif Display", serif;font-size:2rem;font-weight:400}
-    .portal p{margin:0;color:var(--muted);line-height:1.6}
-    .portal span{margin-top:1rem;font-weight:800}
-    .content-section{padding:1rem 0 2.4rem;scroll-margin-top:96px}
-    .section-shell{
-      border:1px solid var(--line);border-radius:28px;background:rgba(255,255,255,.58);box-shadow:var(--shadow);overflow:hidden;
+
+    .portal:hover{
+      transform:translateY(-3px);
+      background:#fff;
+      border-color:var(--line-strong);
     }
-    .section-top{padding:1.2rem 1.2rem 0}
-    .section-bar{
-      padding:1rem 1.2rem 1.2rem;display:grid;grid-template-columns:1.15fr .85fr;gap:1rem;align-items:start;
+
+    .portal small{
+      color:var(--accent);
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-weight:800;
     }
+
+    .portal h3{
+      margin:.45rem 0;
+      font-family:"DM Serif Display", serif;
+      font-size:1.8rem;
+      font-weight:400;
+    }
+
+    .portal p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .portal span{
+      margin-top:1rem;
+      font-weight:800;
+    }
+
+    .page{
+      display:none;
+      padding:0 0 1.6rem;
+    }
+
+    .page.active{
+      display:block;
+    }
+
+    .page-shell{
+      background:rgba(255,255,255,.72);
+      border:1px solid var(--line);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .page-head{
+      padding:1.2rem 1.2rem 0;
+    }
+
+    .page-head h2{
+      margin:0;
+      font-family:"DM Serif Display", serif;
+      font-size:clamp(2rem, 4vw, 3rem);
+      font-weight:400;
+    }
+
+    .page-head p{
+      margin:.35rem 0 0;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .toolbar{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:1rem;
+      padding:1rem 1.2rem;
+    }
+
     .search-box,.filters{
-      border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.62);padding:1rem;
+      border:1px solid var(--line);
+      border-radius:20px;
+      background:rgba(255,255,255,.86);
+      padding:1rem;
     }
-    .search-row{display:flex;gap:.8rem;align-items:center}
+
+    .search-row{
+      display:flex;
+      align-items:center;
+      gap:.7rem;
+    }
+
     .search-icon{
-      width:42px;height:42px;display:grid;place-items:center;border-radius:14px;border:1px solid var(--line);background:#fff;flex-shrink:0;
+      width:42px;
+      height:42px;
+      display:grid;
+      place-items:center;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:#fff;
+      flex-shrink:0;
     }
-    .search-input{
-      width:100%;border:none;background:transparent;outline:none;color:var(--ink);font-weight:700;font-size:1rem;
+
+    .search-box input{
+      width:100%;
+      border:none;
+      outline:none;
+      background:transparent;
+      font-weight:700;
+      color:var(--ink);
+      min-width:0;
     }
-    .search-input::placeholder{color:#857e75}
-    .filters{display:flex;flex-wrap:wrap;gap:.55rem}
-    .section-body{padding:0 1.2rem 1.2rem}
-    .list-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+
+    .filters{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.55rem;
+      align-content:flex-start;
+    }
+
+    .page-body{
+      padding:0 1.2rem 1.2rem;
+    }
+
+    .list-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:1rem;
+    }
+
     .entry{
-      padding:1rem;border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.72);transition:.2s ease;
+      padding:1rem;
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:rgba(255,255,255,.86);
+      transition:.2s ease;
     }
-    .entry:hover{border-color:var(--line-strong);background:#fff;transform:translateY(-2px)}
-    .meta{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:.7rem}
+
+    .entry:hover{
+      transform:translateY(-2px);
+      background:#fff;
+      border-color:var(--line-strong);
+    }
+
+    .meta{
+      display:flex;
+      gap:.45rem;
+      flex-wrap:wrap;
+      margin-bottom:.65rem;
+    }
+
     .badge{
-      display:inline-flex;align-items:center;padding:.42rem .65rem;border-radius:999px;background:var(--accent-soft);
-      border:1px solid rgba(122,62,47,.14);color:#5d3126;font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;font-weight:800;
+      display:inline-flex;
+      align-items:center;
+      padding:.42rem .65rem;
+      border-radius:999px;
+      background:var(--accent-soft);
+      border:1px solid rgba(122,62,47,.14);
+      color:#5d3126;
+      font-size:.72rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-weight:800;
     }
-    .entry h3{margin:.15rem 0 .35rem;font-size:1.1rem;line-height:1.2}
-    .alt{margin:0 0 .55rem;color:var(--accent);font-size:.9rem;font-weight:700}
-    .desc{margin:0;color:#2f2b27;line-height:1.72;font-size:.95rem}
+
+    .entry h3{
+      margin:.1rem 0 .35rem;
+      font-size:1.08rem;
+      line-height:1.25;
+    }
+
+    .alt{
+      margin:0 0 .55rem;
+      color:var(--accent);
+      font-size:.9rem;
+      font-weight:700;
+    }
+
+    .desc{
+      margin:0;
+      color:#2f2b27;
+      line-height:1.68;
+      font-size:.95rem;
+    }
+
     .empty{
-      display:none;padding:1rem;border-radius:18px;border:1px dashed var(--line-strong);color:var(--muted);
-      background:rgba(255,255,255,.55);margin-bottom:1rem;
+      display:none;
+      padding:1rem;
+      border-radius:18px;
+      border:1px dashed var(--line-strong);
+      color:var(--muted);
+      background:rgba(255,255,255,.6);
+      margin-bottom:1rem;
     }
-    footer{padding:1.2rem 0 3rem;color:var(--muted)}
+
+    .global-results{
+      display:none;
+      padding:0 0 1.6rem;
+    }
+
+    .global-results.show{
+      display:block;
+    }
+
+    .results-shell{
+      background:rgba(255,255,255,.72);
+      border:1px solid var(--line);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:1.2rem;
+    }
+
+    .results-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:1rem;
+    }
+
+    footer{
+      padding:1.2rem 0 3rem;
+      color:var(--muted);
+    }
+
     .footer-line{
-      border-top:1px solid var(--line);padding-top:1rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+      border-top:1px solid var(--line);
+      padding-top:1rem;
+      display:flex;
+      justify-content:space-between;
+      gap:1rem;
+      flex-wrap:wrap;
     }
-    .reveal{opacity:0;transform:translateY(18px)}
-    .reveal.in{animation:rise .65s ease forwards}
-    @keyframes rise{to{opacity:1;transform:translateY(0)}}
-    @media (max-width: 1080px){
-      .hero-grid,.portal-grid,.list-grid,.section-bar,.stats{grid-template-columns:1fr 1fr}
+
+    @media (max-width:1100px){
+      .topbar-inner{
+        grid-template-columns:1fr;
+        align-items:stretch;
+      }
+      .nav-links{justify-content:flex-start}
+      .hero-grid,.section-grid,.list-grid,.toolbar,.stats,.results-grid{
+        grid-template-columns:1fr 1fr;
+      }
     }
-    @media (max-width: 760px){
-      :root{--nav-h:66px}
-      .hero-grid,.portal-grid,.list-grid,.section-bar,.stats{grid-template-columns:1fr}
-      .nav-links a:nth-child(n+3){display:none}
-      .topbar-inner{gap:.75rem}
-    }
-    @media (max-width: 520px){
-      .wrap{width:min(calc(100% - 1rem), var(--max))}
-      .panel,.section-shell,.portal,.entry,.search-box,.filters,.note{border-radius:20px}
-      .section-head,.footer-line{flex-direction:column;align-items:flex-start}
+
+    @media (max-width:760px){
+      .hero-grid,.section-grid,.list-grid,.toolbar,.stats,.results-grid{
+        grid-template-columns:1fr;
+      }
     }
   </style>
 </head>
 <body>
   <nav class="topbar" aria-label="Navegación principal">
     <div class="wrap topbar-inner">
-      <a href="#inicio" class="brand">
+      <a href="#" class="brand" id="homeBrand">
         <strong>Drop Multimedia</strong>
-        <span>Catálogo personal por secciones</span>
+        <span>Catálogo consolidado por páginas</span>
       </a>
+
+      <div class="global-search" role="search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" stroke="#151515" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <input id="globalSearch" type="search" placeholder="Buscar en todo el catálogo: anime, juegos y películas..." />
+      </div>
+
       <div class="nav-links">
-        <a href="#portales">Secciones</a>
-        <a href="#anime">Anime</a>
-        <a href="#juegos">Juegos</a>
-        <a href="#peliculas">Películas</a>
-        <button id="printBtn" type="button">Exportar / Imprimir</button>
+        <button class="nav-btn active nav-page-btn" data-page="inicio" type="button">Inicio</button>
+        <button class="nav-btn nav-page-btn" data-page="anime" type="button">Anime</button>
+        <button class="nav-btn nav-page-btn" data-page="juegos" type="button">Juegos</button>
+        <button class="nav-btn nav-page-btn" data-page="peliculas" type="button">Películas</button>
+        <button class="nav-btn nav-page-btn" data-page="series" type="button">Series</button>
       </div>
     </div>
   </nav>
 
-  <main id="inicio">
-    <section class="hero">
-      <div class="wrap hero-grid">
-        <article class="panel hero-main reveal">
+  <main class="wrap">
+    <section class="hero page active" id="page-inicio">
+      <div class="hero-grid">
+        <article class="panel hero-main">
           <div>
             <span class="eyebrow">Archivo principal</span>
             <h1>Drop Multimedia</h1>
             <p>
-              Catálogo organizado por secciones separadas para entrar directamente al listado completo de anime, juegos o películas.
-              Esta versión ya integra anime, la biblioteca de juegos de PC y un bloque de películas mucho más amplio,
-              todo ordenado alfabéticamente y con búsqueda rápida para encontrar cualquier título con facilidad.
+              Esta versión ya está consolidada para que no falten tantos elementos de tus listados. El contenido está dividido en páginas internas:
+              <strong>Anime</strong>, <strong>Juegos</strong>, <strong>Películas</strong> y <strong>Series</strong>.
+              Además, la búsqueda global superior sigue funcionando sobre todo el catálogo.
             </p>
             <div class="hero-actions">
-              <a class="chip primary" href="#portales">Entrar al catálogo</a>
-              <a class="chip" href="#peliculas">Ir a películas</a>
+              <button class="btn primary nav-page-btn" data-page="anime" type="button">Ir a Anime</button>
+              <button class="btn nav-page-btn" data-page="juegos" type="button">Ir a Juegos</button>
+              <button class="btn nav-page-btn" data-page="peliculas" type="button">Ir a Películas</button>
             </div>
             <div class="stats">
               <div class="stat">
@@ -216,126 +580,126 @@
                 <span>Películas</span>
               </div>
               <div class="stat">
-                <strong>PDF</strong>
-                <span>Listo para exportar</span>
+                <strong id="totalCount">0</strong>
+                <span>Total catálogo</span>
               </div>
             </div>
           </div>
         </article>
 
-        <aside class="panel hero-side reveal">
+        <aside class="panel hero-side">
           <div class="note">
-            <h3>Navegación simple</h3>
-            <p>Pulsa una sección para entrar directamente a su listado completo. Anime, juegos y películas ya cuentan con buscador integrado.</p>
+            <h3>Separado por páginas</h3>
+            <p>Ahora no tienes que bajar por una página larguísima. Cada categoría abre su propia vista interna.</p>
           </div>
           <div class="note">
-            <h3>Diseño ligero</h3>
-            <p>Se han eliminado las imágenes para priorizar velocidad, legibilidad y una lectura más clara de cada título.</p>
+            <h3>Búsqueda global</h3>
+            <p>La barra superior sigue buscando anime, juegos y películas al mismo tiempo, incluso si estás en otra página.</p>
           </div>
           <div class="note">
-            <h3>Orden alfabético</h3>
-            <p>Todo el contenido se renderiza automáticamente en orden alfabético para que localizar una película o juego sea mucho más sencillo.</p>
+            <h3>Revisión consolidada</h3>
+            <p>He reforzado sobre todo el bloque de juegos con más títulos de tu captura. Después podemos seguir completando películas y anime si quieres una carga total definitiva.</p>
           </div>
         </aside>
       </div>
+
+      <div class="section-grid">
+        <button class="portal nav-page-btn" data-page="anime" type="button">
+          <div>
+            <small>Sección 01</small>
+            <h3>Anime</h3>
+            <p>Series con temporadas, nombre alternativo y descripción ampliada.</p>
+          </div>
+          <span>Entrar →</span>
+        </button>
+
+        <button class="portal nav-page-btn" data-page="juegos" type="button">
+          <div>
+            <small>Sección 02</small>
+            <h3>Juegos</h3>
+            <p>Biblioteca de juegos de PC revisada con muchos más títulos del listado.</p>
+          </div>
+          <span>Entrar →</span>
+        </button>
+
+        <button class="portal nav-page-btn" data-page="peliculas" type="button">
+          <div>
+            <small>Sección 03</small>
+            <h3>Películas</h3>
+            <p>Catálogo de películas organizado por tipo y ordenado alfabéticamente.</p>
+          </div>
+          <span>Entrar →</span>
+        </button>
+
+        <button class="portal nav-page-btn" data-page="series" type="button">
+          <div>
+            <small>Sección 04</small>
+            <h3>Series</h3>
+            <p>Bloque preparado para futuras series o para separar más contenido si quieres.</p>
+          </div>
+          <span>Entrar →</span>
+        </button>
+      </div>
     </section>
 
-    <section class="section-links" id="portales">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <h2>Secciones principales</h2>
-          <p>Pulsa cualquier bloque para entrar directamente a la lista completa de esa categoría.</p>
+    <section class="global-results" id="globalResultsSection">
+      <div class="results-shell">
+        <div class="page-head">
+          <h2>Resultados globales</h2>
+          <p id="globalStatus">Usa la barra superior para buscar en todo el catálogo.</p>
         </div>
-
-        <div class="portal-grid">
-          <a href="#anime" class="portal reveal">
-            <div>
-              <small>Sección 01</small>
-              <h3>Anime</h3>
-              <p>Listado completo con temporadas disponibles, título alternativo y una descripción más desarrollada.</p>
-            </div>
-            <span>Ver catálogo completo →</span>
-          </a>
-
-          <a href="#juegos" class="portal reveal">
-            <div>
-              <small>Sección 02</small>
-              <h3>Juegos</h3>
-              <p>Listado de juegos de PC integrado desde tu colección, con género principal y descripción resumida.</p>
-            </div>
-            <span>Ver catálogo completo →</span>
-          </a>
-
-          <a href="#peliculas" class="portal reveal">
-            <div>
-              <small>Sección 03</small>
-              <h3>Películas</h3>
-              <p>Bloque ampliado con Marvel, DC, acción, comedia, romance, drama, animación, fantasía y ciencia ficción.</p>
-            </div>
-            <span>Ver catálogo completo →</span>
-          </a>
-
-          <a href="#series" class="portal reveal">
-            <div>
-              <small>Sección 04</small>
-              <h3>Series</h3>
-              <p>Sección preparada para futuras series con el mismo formato limpio y ordenado.</p>
-            </div>
-            <span>Entrar a series →</span>
-          </a>
+        <div class="page-body">
+          <div class="empty" id="globalEmpty">No se encontraron resultados en todo el catálogo.</div>
+          <div class="results-grid" id="globalResultsList"></div>
         </div>
       </div>
     </section>
 
-    <section class="content-section" id="anime">
-      <div class="wrap section-shell">
-        <div class="section-top">
-          <div class="section-head reveal">
-            <h2>Catálogo completo de anime</h2>
-            <p>Busca por título, nombre alternativo o palabras de la descripción para encontrar una serie rápidamente.</p>
-          </div>
+    <section class="page" id="page-anime">
+      <div class="page-shell">
+        <div class="page-head">
+          <h2>Anime</h2>
+          <p>Listado completo de anime con filtro por temporadas y búsqueda interna.</p>
         </div>
-        <div class="section-bar">
-          <div class="search-box reveal">
+        <div class="toolbar">
+          <div class="search-box">
             <div class="search-row">
               <div class="search-icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" stroke="#151515" stroke-width="1.8" stroke-linecap="round"/></svg>
               </div>
-              <input id="animeSearch" class="search-input" type="search" placeholder="Buscar anime por título o descripción..." />
+              <input id="animeSearch" type="search" placeholder="Buscar dentro de anime..." />
             </div>
           </div>
-          <div class="filters reveal" aria-label="Filtros por temporadas">
+          <div class="filters">
             <button class="chip active anime-filter" data-anime-filter="all" type="button">Todas</button>
             <button class="chip anime-filter" data-anime-filter="1" type="button">1 temporada</button>
             <button class="chip anime-filter" data-anime-filter="2" type="button">2 temporadas</button>
             <button class="chip anime-filter" data-anime-filter="3plus" type="button">3 o más</button>
           </div>
         </div>
-        <div class="section-body">
+        <div class="page-body">
           <div class="empty" id="animeEmpty">No se encontraron series con ese criterio.</div>
           <div class="list-grid" id="animeList"></div>
         </div>
       </div>
     </section>
 
-    <section class="content-section" id="juegos">
-      <div class="wrap section-shell">
-        <div class="section-top">
-          <div class="section-head reveal">
-            <h2>Catálogo completo de juegos</h2>
-            <p>Listado de juegos de PC integrado desde tu colección. Puedes buscar por nombre, género o descripción breve.</p>
-          </div>
+    <section class="page" id="page-juegos">
+      <div class="page-shell">
+        <div class="page-head">
+          <h2>Juegos</h2>
+          <p>Listado ampliado de juegos de PC con búsqueda y filtro por género.</p>
         </div>
-        <div class="section-bar">
-          <div class="search-box reveal">
+        <div class="toolbar">
+          <div class="search-box">
             <div class="search-row">
               <div class="search-icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" stroke="#151515" stroke-width="1.8" stroke-linecap="round"/></svg>
               </div>
-              <input id="gameSearch" class="search-input" type="search" placeholder="Buscar juego por título o descripción..." />
+              <input id="gameSearch" type="search" placeholder="Buscar dentro de juegos..." />
             </div>
           </div>
-          <div class="filters reveal" aria-label="Filtros por tipo de juego">
+          <div class="filters">
             <button class="chip active game-filter" data-game-filter="all" type="button">Todos</button>
             <button class="chip game-filter" data-game-filter="accion" type="button">Acción</button>
             <button class="chip game-filter" data-game-filter="rpg" type="button">RPG</button>
@@ -343,31 +707,29 @@
             <button class="chip game-filter" data-game-filter="estrategia" type="button">Estrategia</button>
           </div>
         </div>
-        <div class="section-body">
+        <div class="page-body">
           <div class="empty" id="gamesEmpty">No se encontraron juegos con ese criterio.</div>
           <div class="list-grid" id="gamesList"></div>
         </div>
       </div>
     </section>
 
-    <section class="content-section" id="peliculas">
-      <div class="wrap section-shell">
-        <div class="section-top">
-          <div class="section-head reveal">
-            <h2>Catálogo completo de películas</h2>
-            <p>Películas organizadas alfabéticamente y clasificadas por tipo para que puedas filtrarlas o encontrarlas con rapidez.</p>
-          </div>
+    <section class="page" id="page-peliculas">
+      <div class="page-shell">
+        <div class="page-head">
+          <h2>Películas</h2>
+          <p>Listado de películas con búsqueda interna y filtro por tipo.</p>
         </div>
-        <div class="section-bar">
-          <div class="search-box reveal">
+        <div class="toolbar">
+          <div class="search-box">
             <div class="search-row">
               <div class="search-icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" stroke="#151515" stroke-width="1.8" stroke-linecap="round"/></svg>
               </div>
-              <input id="movieSearch" class="search-input" type="search" placeholder="Buscar película por título, saga o descripción..." />
+              <input id="movieSearch" type="search" placeholder="Buscar dentro de películas..." />
             </div>
           </div>
-          <div class="filters reveal" aria-label="Filtros por categoría de película">
+          <div class="filters">
             <button class="chip active movie-filter" data-movie-filter="all" type="button">Todas</button>
             <button class="chip movie-filter" data-movie-filter="marvel" type="button">Marvel</button>
             <button class="chip movie-filter" data-movie-filter="dc" type="button">DC</button>
@@ -375,23 +737,21 @@
             <button class="chip movie-filter" data-movie-filter="animacion" type="button">Animación</button>
           </div>
         </div>
-        <div class="section-body">
+        <div class="page-body">
           <div class="empty" id="moviesEmpty">No se encontraron películas con ese criterio.</div>
           <div class="list-grid" id="moviesList"></div>
         </div>
       </div>
     </section>
 
-    <section class="content-section" id="series">
-      <div class="wrap section-shell">
-        <div class="section-top">
-          <div class="section-head reveal">
-            <h2>Series</h2>
-            <p>Sección preparada para futuras series con temporadas, plataforma y descripción.</p>
-          </div>
+    <section class="page" id="page-series">
+      <div class="page-shell">
+        <div class="page-head">
+          <h2>Series</h2>
+          <p>Sección preparada para futuras series.</p>
         </div>
-        <div class="section-body">
-          <div class="empty" style="display:block;">Aún no se han añadido series a este bloque.</div>
+        <div class="page-body">
+          <div class="empty" style="display:block;">Aún no se han añadido series a este bloque. Si quieres, en el siguiente paso te lo lleno también.</div>
         </div>
       </div>
     </section>
@@ -399,337 +759,209 @@
 
   <footer>
     <div class="wrap footer-line">
-      <span>Drop Multimedia — catálogo minimalista por secciones.</span>
-      <span>Anime, juegos y películas ya integrados; series listas para añadirse después.</span>
+      <span>Drop Multimedia — catálogo consolidado por páginas internas.</span>
+      <span>Juegos revisados y ampliados; anime y películas listos para seguir completando si quieres una carga total.</span>
     </div>
   </footer>
 
   <script>
     const animeData = [
-      { title:"Akagami no Shirayuki-hime", alt:"Snow White with the Red Hair", seasons:2, desc:"Una fantasía romántica centrada en Shirayuki, una joven boticaria de cabello rojo que decide construir su futuro por sí misma. La serie destaca por su tono cálido, su crecimiento personal y una historia donde el romance avanza con delicadeza sin perder el enfoque en la independencia de su protagonista." },
-      { title:"Another", alt:"Another", seasons:1, desc:"Thriller escolar con una atmósfera opresiva y una maldición que convierte cada episodio en una cuenta regresiva. La historia mezcla misterio, tensión psicológica y muertes impactantes mientras los estudiantes intentan descubrir el origen del desastre que persigue a su clase." },
-      { title:"Ao no Exorcist", alt:"Blue Exorcist", seasons:3, desc:"Rin Okumura descubre que es hijo de Satanás y termina ingresando a una academia de exorcistas para combatir precisamente a las fuerzas demoníacas de las que proviene. Combina acción sobrenatural, conflictos familiares y una lucha constante entre destino, identidad y voluntad propia." },
-      { title:"Arifureta Shokugyou de Sekai Saikyou", alt:"Arifureta", seasons:3, desc:"Lo que empieza como un isekai de grupo se transforma rápidamente en una historia de supervivencia extrema. Tras ser traicionado, Hajime cae a las profundidades de una mazmorra y debe cambiar por completo para salir con vida, convirtiéndose en un protagonista mucho más duro, frío y poderoso." },
-      { title:"Black Clover", alt:"Black Clover", seasons:4, desc:"Asta y Yuno crecieron juntos soñando con convertirse en Rey Mago, aunque uno de ellos carece totalmente de magia. La serie desarrolla un clásico shonen de rivalidad, superación y batallas espectaculares, con un mundo donde el esfuerzo, la voluntad y la amistad empujan constantemente la historia." },
-      { title:"Bleach", alt:"Bleach", seasons:3, desc:"Ichigo Kurosaki obtiene poderes de shinigami y se ve arrastrado a un universo espiritual lleno de almas, monstruos y espadas memorables. Es una serie que mezcla acción sobrenatural, grandes enfrentamientos y una construcción de facciones que la convirtió en uno de los shonen más reconocidos." },
-      { title:"Boku no Hero Academia", alt:"My Hero Academia", seasons:7, desc:"En un mundo donde casi todos nacen con poderes, Izuku Midoriya comienza sin ninguno, pero con el sueño intacto de ser un héroe. La obra combina formación académica, combates intensos, crecimiento de personajes y una reflexión constante sobre qué significa realmente salvar a otros." },
-      { title:"Castlevania", alt:"Castlevania", seasons:4, desc:"Inspirada en la famosa saga de videojuegos, esta serie presenta una fantasía oscura marcada por violencia, tragedia y una estética gótica muy definida. La lucha contra Drácula se convierte en un conflicto épico donde los personajes arrastran dolor, venganza y una humanidad compleja." },
-      { title:"Code Geass", alt:"Code Geass", seasons:2, desc:"Lelouch obtiene un poder capaz de obligar a cualquiera a obedecer sus órdenes y decide usarlo para derribar un imperio. La serie mezcla estrategia, política, mechas y giros dramáticos muy intensos, construyendo una historia de rebelión donde cada victoria tiene un costo moral elevado." },
-      { title:"Dandadan", alt:"Dandadan", seasons:1, desc:"Una propuesta caótica, divertida y extremadamente enérgica que mezcla fantasmas, extraterrestres, acción y humor absurdo. Su fuerza está en el ritmo vertiginoso, el carisma de la dupla protagonista y una puesta en escena que hace que cada enfrentamiento se sienta impredecible." },
-      { title:"Death Note", alt:"Death Note", seasons:1, desc:"Light Yagami encuentra un cuaderno capaz de matar a cualquier persona cuyo nombre sea escrito en sus páginas, lo que inicia un duelo intelectual inolvidable contra el detective L. Más que una simple historia de crimen, es un thriller psicológico sobre poder, ego, justicia y corrupción moral." },
-      { title:"Dororo", alt:"Dororo", seasons:1, desc:"Hyakkimaru fue sacrificado antes de nacer y debe recuperar su cuerpo enfrentándose a demonios que le arrebataron cada parte. La serie mezcla aventura, dolor, violencia y sensibilidad emocional en una historia sobre identidad, humanidad y el precio de la ambición de otros." },
-      { title:"Dr. Stone", alt:"Dr. Stone", seasons:4, desc:"Tras un fenómeno que petrifica a la humanidad durante miles de años, Senku despierta decidido a reconstruir la civilización usando la ciencia. Es una obra muy particular dentro del shonen porque convierte el conocimiento, la experimentación y la invención en el motor principal del conflicto." },
-      { title:"Fairy Tail", alt:"Fairy Tail", seasons:9, desc:"Más que centrarse solo en la aventura, Fairy Tail construye un fuerte sentido de familia dentro de su gremio de magos. Sus peleas, su humor y sus momentos emocionales giran constantemente alrededor del compañerismo, la lealtad y la fuerza que nace de los vínculos entre personajes." },
-      { title:"Frieren", alt:"Frieren: Beyond Journey’s End", seasons:1, desc:"Después de haber derrotado al rey demonio, la maga elfa Frieren inicia un viaje mucho más íntimo: comprender lo que significaron para ella las personas con las que compartió su antigua aventura. Es una fantasía contemplativa y melancólica sobre tiempo, memoria, duelo y afecto." },
-      { title:"Fumetsu no Anata e", alt:"To Your Eternity", seasons:3, desc:"Un ser inmortal sin forma llega al mundo y va aprendiendo lo que significa vivir, cambiar y sufrir a través de sus encuentros con distintas personas. La serie destaca por su fuerte carga emocional y por explorar con sensibilidad temas como la pérdida, la identidad y la evolución personal." },
-      { title:"Gate", alt:"Gate: Jieitai Kanochi nite, Kaku Tatakaeri", seasons:2, desc:"Un portal aparece en Japón y conecta el mundo moderno con un territorio de fantasía lleno de ejércitos, criaturas y conflictos políticos. El atractivo principal está en el choque entre tecnología militar contemporánea y estructuras propias del género fantástico clásico." },
-      { title:"High School DxD", alt:"High School DxD", seasons:4, desc:"Aunque es muy conocida por su componente ecchi, también desarrolla una historia de facciones sobrenaturales con demonios, ángeles caídos y poderes en constante ascenso. Su éxito se sostiene en la mezcla entre humor, combates y una mitología fantástica que se expande bastante." },
-      { title:"Highschool of the Dead", alt:"Highschool of the Dead", seasons:1, desc:"Un apocalipsis zombi arrasa la normalidad y obliga a un grupo de estudiantes y adultos a sobrevivir en medio del caos. La serie combina acción intensa, tensión constante y una visión muy directa del colapso social, envuelta en una puesta en escena exagerada y muy reconocible." },
-      { title:"Hunter x Hunter", alt:"Hunter x Hunter", seasons:1, desc:"Gon emprende un viaje para convertirse en Hunter y entender mejor el mundo y el legado de su padre. La serie va mucho más allá de la aventura inicial y termina desarrollando uno de los sistemas de poder más admirados del anime, junto con conflictos cada vez más complejos y oscuros." },
-      { title:"Jujutsu Kaisen", alt:"Jujutsu Kaisen", seasons:2, desc:"Yuji Itadori se ve atrapado en el mundo de las maldiciones tras ingerir un objeto prohibido y termina involucrado en una guerra espiritual llena de peligro. Combina peleas muy dinámicas, personajes carismáticos y una atmósfera moderna donde el horror y la acción conviven con naturalidad." },
-      { title:"Kaijuu 8-gou", alt:"Kaiju No. 8", seasons:2, desc:"Kafka Hibino llevaba una vida frustrada hasta que termina convirtiéndose en una criatura híbrida mitad humano, mitad kaiju. La serie mezcla acción militar, monstruos gigantes y una visión interesante sobre segundas oportunidades, madurez y el deseo de cumplir una promesa tardía." },
-      { title:"Kaguya-sama wa Kokurasetai", alt:"Kaguya-sama: Love is War", seasons:3, desc:"Lo que podría ser una comedia romántica escolar tradicional se convierte aquí en una guerra psicológica absurda y brillante. Kaguya y Miyuki se gustan, pero están demasiado orgullosos para confesarlo, así que cada episodio transforma sus emociones en un duelo de estrategia hilarante." },
-      { title:"Kimetsu no Yaiba", alt:"Demon Slayer", seasons:4, desc:"Después de que su familia es asesinada por demonios, Tanjiro inicia un largo camino para salvar a su hermana y convertirse en cazador. La serie destaca por su fuerza emocional, su sentido del deber familiar y una puesta en escena visual que convirtió muchas de sus batallas en momentos icónicos." },
-      { title:"Kumo desu ga, Nani ka?", alt:"So I’m a Spider, So What?", seasons:1, desc:"Una estudiante reencarna en otro mundo, pero en lugar de obtener una posición heroica termina convertida en una pequeña araña en una mazmorra mortal. A partir de ahí la historia explota el ingenio, la adaptación y la progresión de poder desde un punto de partida muy hostil." },
-      { title:"Maou Gakuin no Futekigousha", alt:"The Misfit of Demon King Academy", seasons:2, desc:"Anos Voldigoad, el legendario rey demonio, regresa miles de años después y descubre que la historia lo ha deformado por completo. La serie abraza el espectáculo de un protagonista absurdamente poderoso, pero también juega con la idea de legado, memoria y falsa autoridad." },
-      { title:"Mashle", alt:"Mashle: Magic and Muscles", seasons:2, desc:"En un mundo regido por la magia, Mash carece completamente de ella, pero compensa esa ausencia con una fuerza física ridícula. La serie funciona como una parodia muy directa del shonen escolar y del fantasy mágico, construyendo humor a partir del contraste entre reglas complejas y soluciones brutales." },
-      { title:"Mushoku Tensei", alt:"Jobless Reincarnation", seasons:2, desc:"Un hombre que desperdició su primera vida obtiene una nueva oportunidad al reencarnar en un mundo de fantasía. La serie sigue su desarrollo desde la infancia, explorando crecimiento, errores, relaciones y madurez con un enfoque más detallado que el de muchos otros isekai." },
-      { title:"Nanatsu no Taizai", alt:"The Seven Deadly Sins", seasons:4, desc:"Un grupo de guerreros legendarios es reunido para salvar el reino mientras salen a la luz antiguas traiciones, pactos y secretos. La obra mezcla fantasía heroica, romance, humor y grandes batallas, apoyándose mucho en el carisma de su elenco principal." },
-      { title:"Naruto", alt:"Naruto / Naruto Shippuden", seasons:2, desc:"Naruto Uzumaki crece siendo rechazado por su aldea, pero aun así insiste en convertirse en Hokage para ser reconocido por todos. La serie es una historia de perseverancia, amistad, rivalidad y dolor, que acompaña a su protagonista desde la infancia hasta conflictos de escala monumental." },
-      { title:"Nisekoi", alt:"Nisekoi", seasons:2, desc:"Una comedia romántica escolar basada en promesas del pasado, relaciones fingidas y múltiples malentendidos sentimentales. Su encanto se apoya en el humor ligero, el ritmo amable y el desarrollo gradual de vínculos dentro de un elenco con personalidades muy marcadas." },
-      { title:"No Game No Life", alt:"No Game No Life", seasons:1, desc:"Sora y Shiro, dos hermanos genios en los videojuegos y los juegos mentales, son transportados a un mundo donde todo se resuelve mediante reglas lúdicas. La serie convierte cada desafío en una batalla de inteligencia, engaño y creatividad, con un estilo visual muy distintivo." },
-      { title:"Noragami", alt:"Noragami", seasons:2, desc:"Yato es un dios menor casi olvidado que sueña con tener millones de seguidores, pero para lograrlo debe aceptar trabajos humildes y enfrentar amenazas espirituales mayores. La historia combina humor, acción sobrenatural y un fondo emocional sobre abandono, vínculo y redención." },
-      { title:"Owari no Seraph", alt:"Seraph of the End", seasons:2, desc:"Tras un desastre global, el mundo queda dominado por vampiros y la humanidad se reorganiza en medio del miedo y la guerra. La serie sigue a Yuichiro y su deseo de venganza, desarrollando una historia de batallas, experimentos y lealtades fracturadas." },
-      { title:"Overlord", alt:"Overlord", seasons:4, desc:"Un jugador queda atrapado dentro de un juego online justo cuando sus servidores deberían cerrar, pero su personaje conserva todo su poder y autoridad. La serie observa el avance de Ainz desde la perspectiva de un soberano casi divino que intenta entender el mundo mientras lo domina." },
-      { title:"Plunderer", alt:"Plunderer", seasons:1, desc:"En este mundo, el valor de cada persona está ligado a un número que determina su posición social y hasta su destino. La trama combina acción, aventura y misterio, revelando poco a poco los mecanismos ocultos de una realidad que parece mucho más artificial y cruel de lo que aparenta." },
-      { title:"Re:Monster", alt:"Re:Monster", seasons:1, desc:"Un hombre reencarna como un goblin en un entorno despiadado y descubre que puede fortalecerse absorbiendo habilidades de aquello que consume. La serie se apoya en la progresión constante, la evolución del protagonista y una visión más salvaje y pragmática de la fantasía." },
-      { title:"Shangri-La Frontier", alt:"Shangri-La Frontier", seasons:2, desc:"Rakuro prefiere jugar títulos defectuosos e imposibles, así que cuando entra en un VRMMO de enorme calidad lo hace con una mentalidad distinta al resto. Eso convierte la experiencia en una combinación muy entretenida de exploración, habilidad pura y descubrimiento del mundo del juego." },
-      { title:"Silent Witch", alt:"Silent Witch", seasons:1, desc:"La protagonista es una prodigiosa hechicera que esconde su talento detrás de una personalidad retraída y silenciosa. La historia promete una mezcla de magia, intriga y crecimiento personal, apoyándose en el contraste entre su inmenso poder y su dificultad para relacionarse." },
-      { title:"Solo Leveling", alt:"Solo Leveling", seasons:2, desc:"Sung Jin-Woo comienza siendo el cazador más débil, casi una figura trágica dentro de un sistema dominado por jerarquías de poder. Todo cambia cuando accede a un mecanismo único que le permite crecer sin límites, convirtiendo su ascenso en una historia de poder, venganza y espectáculo." },
-      { title:"Spy x Family", alt:"SPY×FAMILY", seasons:3, desc:"Un espía necesita formar una familia falsa para cumplir una misión, pero termina conviviendo con una asesina profesional y una niña telépata sin saber quiénes son realmente. El resultado es una mezcla muy efectiva de comedia, ternura, acción y situaciones familiares muy entrañables." },
-      { title:"Tate no Yuusha no Nariagari", alt:"The Rising of the Shield Hero", seasons:4, desc:"Naofumi es invocado como uno de los héroes legendarios, pero pronto sufre una traición que lo convierte en un marginado. La serie construye su avance a partir de la desconfianza, la supervivencia y una lenta recuperación emocional mientras intenta cumplir su papel en un mundo hostil." },
-      { title:"Tensei shitara Slime Datta Ken", alt:"That Time I Got Reincarnated as a Slime", seasons:3, desc:"Un oficinista muere y renace como un slime en un mundo fantástico, pero pronto descubre habilidades extraordinarias que le permiten crecer y reunir aliados. La serie combina política, construcción de nación, humor y acción dentro de un isekai con tono sorprendentemente optimista." },
-      { title:"Tokyo Revengers", alt:"Tokyo Revengers", seasons:3, desc:"Takemichi descubre que puede viajar al pasado y decide usar esa habilidad para evitar tragedias relacionadas con pandillas juveniles y personas importantes para él. La serie mezcla drama, violencia callejera y emoción, construyendo tensión a través de decisiones que alteran el futuro." },
-      { title:"Tsuki ga Michibiku Isekai Douchuu", alt:"Tsukimichi: Moonlit Fantasy", seasons:2, desc:"Invocado a otro mundo, Makoto es rechazado de inmediato por la diosa que debía recibirlo y termina creando su propio camino lejos del destino heroico esperado. La obra mezcla humor, fantasía, crecimiento de poder y formación de una comunidad alternativa bajo sus propias reglas." },
-      { title:"Vanitas no Carte", alt:"The Case Study of Vanitas", seasons:1, desc:"En un París alternativo lleno de vampiros y misterios, Vanitas utiliza un libro legendario para curar maldiciones que afectan a los de su especie. La serie destaca por su atmósfera elegante, su mezcla de acción y drama, y una tensión constante entre fascinación, peligro y ambigüedad moral." },
-      { title:"Vinland Saga", alt:"Vinland Saga", seasons:2, desc:"Ambientada en la era vikinga, la historia sigue a Thorfinn desde una obsesión juvenil por la venganza hasta una evolución mucho más profunda y dolorosa. La serie es una épica histórica intensa que reflexiona sobre violencia, propósito, honor y la posibilidad de cambiar." },
-      { title:"Yamada-kun lv999", alt:"My Love Story with Yamada-kun at Lv999", seasons:1, desc:"Una historia romántica contemporánea que nace a partir de un juego online, pero se apoya sobre todo en la cercanía emocional entre personajes muy distintos. Tiene un tono ligero y moderno, con una representación amable del romance, la comunidad digital y el crecimiento afectivo." },
-      { title:"Youjo Senki", alt:"The Saga of Tanya the Evil", seasons:1, desc:"Un hombre racional y despiadado reencarna en el cuerpo de una niña dentro de un mundo en guerra con ecos de la Europa del siglo XX. La serie combina estrategia militar, magia y una protagonista fascinante, cuya frialdad convierte cada conflicto en una partida brutal de cálculo." }
+      { title:"Akagami no Shirayuki-hime", alt:"Snow White with the Red Hair", seasons:2, desc:"Una fantasía romántica centrada en Shirayuki, una joven boticaria de cabello rojo que decide construir su futuro por sí misma." },
+      { title:"Another", alt:"Another", seasons:1, desc:"Thriller escolar con una atmósfera opresiva y una maldición que convierte cada episodio en una cuenta regresiva." },
+      { title:"Ao no Exorcist", alt:"Blue Exorcist", seasons:3, desc:"Rin Okumura descubre que es hijo de Satanás y termina ingresando a una academia de exorcistas." },
+      { title:"Arifureta Shokugyou de Sekai Saikyou", alt:"Arifureta", seasons:3, desc:"Isekai de supervivencia extrema donde Hajime debe cambiar por completo para seguir con vida." },
+      { title:"Black Clover", alt:"Black Clover", seasons:4, desc:"Asta y Yuno crecieron soñando con convertirse en Rey Mago dentro de un mundo dominado por la magia." },
+      { title:"Bleach", alt:"Bleach", seasons:3, desc:"Ichigo Kurosaki obtiene poderes de shinigami y entra en un universo espiritual lleno de peligros." },
+      { title:"Boku no Hero Academia", alt:"My Hero Academia", seasons:7, desc:"Izuku Midoriya persigue su sueño de convertirse en héroe en un mundo donde casi todos tienen poderes." },
+      { title:"Castlevania", alt:"Castlevania", seasons:4, desc:"Fantasía oscura inspirada en la saga de videojuegos, marcada por violencia, tragedia y estética gótica." },
+      { title:"Code Geass", alt:"Code Geass", seasons:2, desc:"Lelouch obtiene un poder absoluto y decide usarlo para derrocar un imperio." },
+      { title:"Dandadan", alt:"Dandadan", seasons:1, desc:"Serie caótica y divertidísima que mezcla fantasmas, extraterrestres, acción y humor absurdo." },
+      { title:"Death Note", alt:"Death Note", seasons:1, desc:"Light Yagami encuentra un cuaderno capaz de matar y entra en un duelo intelectual contra L." },
+      { title:"Dororo", alt:"Dororo", seasons:1, desc:"Hyakkimaru debe recuperar su cuerpo enfrentándose a demonios que le arrebataron partes de sí mismo." },
+      { title:"Dr. Stone", alt:"Dr. Stone", seasons:4, desc:"Senku despierta en un mundo petrificado y decide reconstruir la civilización usando la ciencia." },
+      { title:"Fairy Tail", alt:"Fairy Tail", seasons:9, desc:"Un gremio de magos vive aventuras, batallas y vínculos de amistad que funcionan como una familia." },
+      { title:"Frieren", alt:"Frieren: Beyond Journey’s End", seasons:1, desc:"Una fantasía melancólica sobre tiempo, memoria, duelo y el valor de los vínculos." },
+      { title:"Fumetsu no Anata e", alt:"To Your Eternity", seasons:3, desc:"Un ser inmortal aprende a vivir y a sentir a través de las personas que encuentra en su camino." },
+      { title:"Gate", alt:"Gate: Jieitai Kanochi nite, Kaku Tatakaeri", seasons:2, desc:"Un portal conecta Japón con un mundo de fantasía, provocando un choque entre tecnología moderna y estructuras medievales." },
+      { title:"High School DxD", alt:"High School DxD", seasons:4, desc:"Serie sobrenatural con demonios, ángeles caídos, humor y combates de creciente escala." },
+      { title:"Highschool of the Dead", alt:"Highschool of the Dead", seasons:1, desc:"Un apocalipsis zombi obliga a un grupo de estudiantes a sobrevivir en medio del colapso total." },
+      { title:"Hunter x Hunter", alt:"Hunter x Hunter", seasons:1, desc:"Gon emprende un viaje para convertirse en Hunter y descubrir la verdad sobre su padre." },
+      { title:"Jujutsu Kaisen", alt:"Jujutsu Kaisen", seasons:2, desc:"Yuji Itadori entra en el mundo de las maldiciones y en una guerra espiritual llena de peligro." },
+      { title:"Kaijuu 8-gou", alt:"Kaiju No. 8", seasons:2, desc:"Kafka Hibino se convierte en una criatura híbrida mitad humano, mitad kaiju." },
+      { title:"Kaguya-sama wa Kokurasetai", alt:"Kaguya-sama: Love is War", seasons:3, desc:"Comedia romántica transformada en una guerra psicológica absurda y brillante." },
+      { title:"Kimetsu no Yaiba", alt:"Demon Slayer", seasons:4, desc:"Tanjiro inicia un largo camino para salvar a su hermana y convertirse en cazador de demonios." },
+      { title:"Kumo desu ga, Nani ka?", alt:"So I’m a Spider, So What?", seasons:1, desc:"Una estudiante reencarna como una araña en una mazmorra mortal y debe adaptarse para sobrevivir." },
+      { title:"Maou Gakuin no Futekigousha", alt:"The Misfit of Demon King Academy", seasons:2, desc:"El legendario rey demonio regresa y descubre que la historia ha deformado por completo su legado." },
+      { title:"Mashle", alt:"Mashle: Magic and Muscles", seasons:2, desc:"En un mundo de magia, Mash compensa la falta de poderes con una fuerza física absurda." },
+      { title:"Mushoku Tensei", alt:"Jobless Reincarnation", seasons:2, desc:"Un hombre obtiene una segunda oportunidad al reencarnar en un mundo de fantasía." },
+      { title:"Nanatsu no Taizai", alt:"The Seven Deadly Sins", seasons:4, desc:"Un grupo de guerreros legendarios es reunido para salvar un reino amenazado." },
+      { title:"Naruto", alt:"Naruto / Naruto Shippuden", seasons:2, desc:"Naruto Uzumaki sueña con convertirse en Hokage y ser reconocido por su aldea." },
+      { title:"Nisekoi", alt:"Nisekoi", seasons:2, desc:"Comedia romántica escolar basada en promesas del pasado y relaciones fingidas." },
+      { title:"No Game No Life", alt:"No Game No Life", seasons:1, desc:"Dos hermanos genios son transportados a un mundo donde todo se decide mediante juegos." },
+      { title:"Noragami", alt:"Noragami", seasons:2, desc:"Yato, un dios menor casi olvidado, intenta construir una mejor vida mientras acepta trabajos humildes." },
+      { title:"Owari no Seraph", alt:"Seraph of the End", seasons:2, desc:"En un mundo dominado por vampiros, Yuichiro busca venganza y lucha por la supervivencia humana." },
+      { title:"Overlord", alt:"Overlord", seasons:4, desc:"Un jugador queda atrapado en un juego online con un personaje todopoderoso." },
+      { title:"Plunderer", alt:"Plunderer", seasons:1, desc:"En este mundo, el valor de cada persona está ligado a un número que define su destino." },
+      { title:"Re:Monster", alt:"Re:Monster", seasons:1, desc:"Un hombre reencarna como goblin y evoluciona absorbiendo habilidades de lo que consume." },
+      { title:"Shangri-La Frontier", alt:"Shangri-La Frontier", seasons:2, desc:"Rakuro entra en un VRMMO de enorme calidad y convierte la exploración en una experiencia única." },
+      { title:"Silent Witch", alt:"Silent Witch", seasons:1, desc:"Una prodigiosa hechicera oculta su talento tras una personalidad retraída y silenciosa." },
+      { title:"Solo Leveling", alt:"Solo Leveling", seasons:2, desc:"Sung Jin-Woo asciende desde el nivel más bajo hasta convertirse en una fuerza extraordinaria." },
+      { title:"Spy x Family", alt:"SPY×FAMILY", seasons:3, desc:"Un espía crea una familia falsa sin saber que cada miembro oculta una identidad secreta." },
+      { title:"Tate no Yuusha no Nariagari", alt:"The Rising of the Shield Hero", seasons:4, desc:"Naofumi es traicionado al ser invocado como héroe y debe abrirse camino en un mundo hostil." },
+      { title:"Tensei shitara Slime Datta Ken", alt:"That Time I Got Reincarnated as a Slime", seasons:3, desc:"Un oficinista renace como slime y termina construyendo una comunidad en otro mundo." },
+      { title:"Tokyo Revengers", alt:"Tokyo Revengers", seasons:3, desc:"Takemichi viaja al pasado para intentar evitar tragedias relacionadas con pandillas juveniles." },
+      { title:"Tsuki ga Michibiku Isekai Douchuu", alt:"Tsukimichi: Moonlit Fantasy", seasons:2, desc:"Makoto crea su propio camino después de ser rechazado al llegar a otro mundo." },
+      { title:"Vanitas no Carte", alt:"The Case Study of Vanitas", seasons:1, desc:"En un París alternativo, Vanitas usa un libro legendario para curar maldiciones vampíricas." },
+      { title:"Vinland Saga", alt:"Vinland Saga", seasons:2, desc:"Épica histórica vikinga sobre venganza, violencia, propósito y cambio." },
+      { title:"Yamada-kun lv999", alt:"My Love Story with Yamada-kun at Lv999", seasons:1, desc:"Romance contemporáneo nacido a partir de un videojuego online y una conexión emocional creciente." },
+      { title:"Youjo Senki", alt:"The Saga of Tanya the Evil", seasons:1, desc:"Un hombre reencarna como una niña en guerra y usa su mente fría para sobrevivir y ascender." }
     ];
 
     const gamesData = [
-      { title:"Assassin’s Creed Black Flag Resynced", genre:"accion", desc:"Aventura de acción ambientada en la edad dorada de la piratería. Destaca por su exploración naval, combates en mar abierto y una campaña centrada en la vida de Edward Kenway dentro del universo de Assassin’s Creed." },
-      { title:"American Truck Simulator", genre:"simulacion", desc:"Simulador de conducción en carretera que permite recorrer rutas extensas, gestionar entregas y disfrutar una experiencia pausada basada en transporte, economía y personalización de camiones." },
-      { title:"ARK: Survival Evolved", genre:"accion", desc:"Juego de supervivencia en un entorno hostil lleno de dinosaurios y criaturas salvajes. Combina recolección de recursos, construcción, domesticación y progreso tecnológico en mundos abiertos de gran escala." },
-      { title:"Baldur’s Gate III", genre:"rpg", desc:"RPG occidental de gran profundidad basado en decisiones, combates tácticos por turnos y múltiples ramificaciones narrativas. Ofrece libertad de exploración, creación de personaje y desarrollo de grupo en un universo de fantasía muy rico." },
-      { title:"Battlefleet Gothic Armada II", genre:"estrategia", desc:"Estrategia espacial centrada en grandes flotas del universo Warhammer 40,000. Sus enfrentamientos combinan gestión táctica, posicionamiento y control de naves en batallas de enorme escala." },
-      { title:"Battlefleet Gothic Armada Tau Empire", genre:"estrategia", desc:"Contenido relacionado con combates espaciales dentro del universo Warhammer 40,000, enfocado en el estilo particular y la identidad militar del Imperio Tau." },
-      { title:"BioShock Infinite", genre:"accion", desc:"Shooter narrativo ambientado en la ciudad flotante de Columbia, con una fuerte identidad visual y un enfoque en historia, acción y giros argumentales memorables." },
-      { title:"Call of Duty: Modern Warfare Remastered", genre:"accion", desc:"Remaster del clásico shooter militar moderno. Mantiene su ritmo cinematográfico, campañas intensas y un enfoque directo en combate armado de alta velocidad." },
-      { title:"Cities: Skylines II", genre:"simulacion", desc:"Simulador de construcción y gestión de ciudades donde el jugador planifica infraestructura, transporte, servicios y crecimiento urbano con mayor profundidad sistémica." },
-      { title:"Cyberpunk 2077", genre:"rpg", desc:"RPG de acción en primera persona ambientado en Night City, una metrópolis futurista dominada por corporaciones, implantes y conflictos de poder." },
-      { title:"Deus Ex: Human Revolution Director’s Cut", genre:"rpg", desc:"RPG de acción con fuerte componente de infiltración y decisiones, ambientado en un futuro marcado por la cibernética y las tensiones entre tecnología, ética y control social." },
-      { title:"Disco Elysium: The Final Cut", genre:"rpg", desc:"RPG narrativo profundamente centrado en el diálogo, la psicología del protagonista y la toma de decisiones, con una escritura muy destacada." },
-      { title:"Divinity: Original Sin 2 Definitive Edition", genre:"rpg", desc:"RPG táctico de fantasía con gran libertad para experimentar en combate, desarrollar personajes y resolver conflictos de maneras creativas." },
-      { title:"DOOM Eternal", genre:"accion", desc:"Shooter frenético y extremadamente agresivo que premia movilidad, precisión y control de recursos en medio de combates veloces contra oleadas demoníacas." },
-      { title:"Dragon Age: Origins Ultimate Edition", genre:"rpg", desc:"RPG clásico de fantasía con énfasis en elecciones, relaciones entre compañeros y una campaña épica marcada por política, guerra y conflictos morales." },
-      { title:"DUSK", genre:"accion", desc:"Shooter retro inspirado en clásicos de los años noventa, con una estética cruda, armas contundentes y un ritmo muy rápido." },
-      { title:"Elden Ring", genre:"rpg", desc:"RPG de acción en mundo abierto con exploración libre, combates exigentes y una ambientación oscura que invita al descubrimiento constante." },
-      { title:"Euro Truck Simulator 2", genre:"simulacion", desc:"Simulador de transporte por carretera centrado en la conducción realista, rutas europeas, gestión de empresa y progresión." },
-      { title:"Fallout 4", genre:"rpg", desc:"RPG de acción posapocalíptico con exploración libre, combate, construcción de asentamientos y una ambientación donde la supervivencia manda." },
-      { title:"Fallout: New Vegas Ultimate Edition", genre:"rpg", desc:"Uno de los RPG de mundo abierto más valorados por su libertad de decisiones, facciones enfrentadas y construcción de personaje." },
-      { title:"Far Cry 3 Complete Collection", genre:"accion", desc:"Shooter de mundo abierto ambientado en una isla tropical dominada por la violencia, con acción, infiltración, caza y caos emergente." },
-      { title:"Farming Simulator 25", genre:"simulacion", desc:"Simulador agrícola centrado en maquinaria, gestión de cultivos, economía rural y expansión progresiva." },
-      { title:"Farthest Frontier", genre:"estrategia", desc:"Juego de construcción y supervivencia de asentamientos donde el jugador administra recursos, producción y defensa." },
-      { title:"Final Fantasy X/X-2 HD Remaster", genre:"rpg", desc:"Colección remasterizada de dos JRPG muy reconocidos por su historia, personajes y sistema de progresión." },
-      { title:"Forever Skies", genre:"simulacion", desc:"Aventura de supervivencia y exploración en un entorno devastado, con enfoque en recolección y gestión de recursos." },
-      { title:"Forza Horizon 5", genre:"accion", desc:"Juego de conducción en mundo abierto centrado en velocidad, exploración y variedad de vehículos con una propuesta muy espectacular." },
-      { title:"Forza Horizon 6", genre:"accion", desc:"Entrada listada como futura o pendiente dentro de la colección, orientada a carreras arcade de mundo abierto." },
-      { title:"Forza Motorsport 2023", genre:"accion", desc:"Juego de carreras más enfocado en circuito y rendimiento técnico, ideal para quienes buscan conducción más controlada y competitiva." },
-      { title:"Foundation", genre:"estrategia", desc:"Juego de construcción medieval con énfasis en planificación orgánica de ciudades, desarrollo económico y administración de recursos." },
-      { title:"Frets On Fire", genre:"accion", desc:"Juego musical inspirado en experiencias de ritmo y guitarra, pensado para partidas rápidas basadas en reflejos." },
-      { title:"Frostpunk", genre:"estrategia", desc:"Estrategia y gestión de supervivencia en una ciudad congelada donde cada decisión afecta moral, recursos y posibilidades de seguir adelante." },
-      { title:"Frostpunk 2", genre:"estrategia", desc:"Secuela que amplía la escala política y social del original, manteniendo el enfoque en supervivencia y decisiones difíciles." },
-      { title:"Grim Dawn", genre:"rpg", desc:"Action RPG isométrico con mucho loot, construcción de builds y ambientación oscura, ideal para quienes disfrutan progresión constante." },
-      { title:"GTA San Andreas", genre:"accion", desc:"Clásico de mundo abierto que combina conducción, disparos, exploración urbana y una historia muy recordada dentro de la saga Grand Theft Auto." },
-      { title:"Gunfire Reborn", genre:"accion", desc:"Shooter roguelite con cooperativo, progresión por partidas y gran variedad de armas y poderes." },
-      { title:"Half-Life 2 Lost Coast", genre:"accion", desc:"Experiencia breve vinculada al universo Half-Life, conocida por mostrar tecnología gráfica y el estilo narrativo de Valve." },
-      { title:"Halo: The Master Chief Collection", genre:"accion", desc:"Compilación esencial para jugar varias entregas de Halo, combinando campañas, ciencia ficción militar y legado histórico del shooter." },
-      { title:"Hollow Knight: Silksong", genre:"accion", desc:"Título esperado relacionado con la fórmula metroidvania de Hollow Knight, centrado en exploración, precisión y un mundo cargado de misterio." },
-      { title:"Hytale Online", genre:"simulacion", desc:"Proyecto orientado a creatividad, aventura y construcción en entornos sandbox, con fuerte interés en exploración y comunidad." },
-      { title:"Kingdom Come: Deliverance", genre:"rpg", desc:"RPG medieval realista que prioriza inmersión histórica, combate menos fantasioso y decisiones narrativas." },
-      { title:"Lies of P", genre:"rpg", desc:"Soulslike inspirado en la historia de Pinocho, con una ambientación sombría, combate técnico y una reinterpretación oscura del cuento clásico." },
-      { title:"Mass Effect Legendary Edition", genre:"rpg", desc:"Colección remasterizada de una de las trilogías más importantes del RPG espacial, centrada en decisiones, relaciones y exploración galáctica." },
-      { title:"Medieval Dynasty", genre:"simulacion", desc:"Juego de supervivencia y gestión ambientado en época medieval, con énfasis en construcción de asentamientos y progreso a largo plazo." },
-      { title:"Metro Exodus Enhanced Edition", genre:"accion", desc:"Shooter narrativo postapocalíptico con exploración, atmósfera opresiva y supervivencia en un viaje por territorios devastados." },
-      { title:"Mindseye", genre:"accion", desc:"Título de acción listado en la colección, orientado a una experiencia de ritmo alto y ambientación contemporánea o futurista." },
-      { title:"Minecraft", genre:"simulacion", desc:"Sandbox de construcción y supervivencia que destaca por su libertad absoluta para crear, explorar y automatizar sistemas." },
-      { title:"Need for Speed: Carbon", genre:"accion", desc:"Carreras callejeras con progresión por territorio, personalización de vehículos y un tono urbano muy marcado." },
-      { title:"Need for Speed Heat", genre:"accion", desc:"Juego de carreras arcade que alterna entre eventos legales de día y persecuciones policiales intensas de noche." },
-      { title:"Need for Speed Hot Pursuit Remastered", genre:"accion", desc:"Versión remasterizada del clásico de persecuciones donde corredores y policías protagonizan carreras veloces y espectaculares." },
-      { title:"Need for Speed Most Wanted", genre:"accion", desc:"Uno de los títulos más recordados de carreras urbanas, conocido por sus persecuciones policiales y fuerte identidad arcade." },
-      { title:"Need for Speed Most Wanted Limited Edition", genre:"accion", desc:"Entrega centrada en velocidad, rivalidad y libertad para recorrer la ciudad, manteniendo el enfoque competitivo típico de la saga." },
-      { title:"NieR: Automata Game of the YoRHa Edition", genre:"rpg", desc:"Action RPG de ciencia ficción con combate ágil, tono filosófico y una narrativa que juega con múltiples perspectivas." },
-      { title:"No Man’s Sky", genre:"simulacion", desc:"Exploración espacial procedural centrada en descubrimiento, supervivencia, construcción de bases y viajes interplanetarios." },
-      { title:"Palworld", genre:"accion", desc:"Juego de supervivencia y captura de criaturas con exploración, automatización, combate y construcción de bases." },
-      { title:"Pathfinder: Wrath of the Righteous", genre:"rpg", desc:"RPG isométrico de gran complejidad táctica y narrativa, con elecciones profundas, clases variadas y campaña épica." },
-      { title:"Pillars of Eternity II: Deadfire", genre:"rpg", desc:"RPG de fantasía con enfoque clásico, exploración marítima, narrativa reactiva y libertad para configurar grupo y estilo de juego." },
-      { title:"RimWorld", genre:"estrategia", desc:"Simulador de colonia donde la narrativa emergente nace de relaciones, accidentes, crisis y decisiones del jugador." },
-      { title:"Saints Row 2022", genre:"accion", desc:"Juego de mundo abierto con tono desenfadado y enfoque en acción exagerada, vehículos, caos urbano y control territorial." },
-      { title:"Saints Row IV Game of the Century Edition", genre:"accion", desc:"Entrega aún más desatada de la saga, con superpoderes, humor absurdo y acción sandbox centrada en el exceso." },
-      { title:"Slime Rancher 2", genre:"simulacion", desc:"Simulador relajado de granja y exploración donde se recolectan criaturas gelatinosas, se gestionan recursos y se descubre un entorno colorido." },
-      { title:"Star Wars Knights of the Old Republic Collection", genre:"rpg", desc:"Colección de un RPG clásico ambientado en Star Wars, conocido por sus decisiones morales y narrativa fuerte." },
-      { title:"Stardew Valley", genre:"simulacion", desc:"Simulador de granja muy querido por su tono cálido, gestión de cultivos, relaciones sociales, exploración y progreso personal." },
-      { title:"Subnautica", genre:"simulacion", desc:"Supervivencia submarina en un planeta alienígena donde la exploración, el miedo a lo desconocido y la gestión de recursos crean una experiencia inmersiva." },
-      { title:"Subnautica 2", genre:"simulacion", desc:"Entrada listada como continuación o futura expansión de la experiencia de supervivencia submarina." },
-      { title:"Subnautica: Below Zero", genre:"simulacion", desc:"Expansión independiente que mantiene la base de exploración y supervivencia acuática, pero con un entorno más helado." },
-      { title:"System Shock 2", genre:"accion", desc:"Clásico de ciencia ficción y terror con fuerte componente inmersivo, exploración en primera persona y gran legado." },
-      { title:"The Elder Scrolls IV: Oblivion", genre:"rpg", desc:"RPG de mundo abierto ambientado en Cyrodiil, conocido por su libertad de exploración, gremios, misiones y universo expansivo." },
-      { title:"The Elder Scrolls IV: Oblivion - Knights of the Nine", genre:"rpg", desc:"Expansión con tono caballeresco y religioso, centrada en recuperar reliquias sagradas y afrontar un conflicto espiritual." },
-      { title:"The Elder Scrolls IV: Oblivion - Shivering Isles", genre:"rpg", desc:"Una de las expansiones más recordadas de Oblivion, ambientada en el reino de Sheogorath, con una identidad mucho más extraña y fantástica." },
-      { title:"The Elder Scrolls IV: Oblivion Expansiones", genre:"rpg", desc:"Contenido adicional para Oblivion que amplía regiones, historias y sistemas del juego base." },
-      { title:"The Elder Scrolls V: Skyrim Special Edition", genre:"rpg", desc:"RPG de fantasía en mundo abierto enormemente popular por su libertad, exploración, dragones, gremios y mods." },
-      { title:"The Witcher 3: Wild Hunt", genre:"rpg", desc:"RPG de acción de mundo abierto con fuerte peso narrativo, misiones memorables, decisiones morales complejas y fantasía madura." },
-      { title:"theHunter: Call of the Wild", genre:"simulacion", desc:"Simulador de caza con entornos naturales amplios, ritmo pausado y énfasis en rastreo, paciencia y precisión." },
-      { title:"Titanfall 2", genre:"accion", desc:"Shooter conocido por su excelente movilidad, su campaña muy sólida y la combinación espectacular entre piloto y titán." },
-      { title:"Valkyrie Elysium", genre:"rpg", desc:"RPG de acción inspirado en la mitología nórdica, con combates dinámicos y una puesta en escena centrada en el fin del mundo." },
-      { title:"Warhammer 40,000 Space Marine 2", genre:"accion", desc:"Secuela orientada a ampliar el espectáculo bélico del universo Warhammer 40,000 con enfrentamientos más masivos." },
-      { title:"Warhammer 40,000 Space Marine Collection", genre:"accion", desc:"Acción en tercera persona ambientada en el brutal universo Warhammer 40,000, con combates pesados y guerra a gran escala." },
-      { title:"Wolfenstein: The New Order", genre:"accion", desc:"Shooter narrativo de corte alternativo donde una dictadura mundial domina el planeta. Combina acción intensa y campaña cinematográfica." },
-      { title:"WRC 10", genre:"accion", desc:"Juego de rally enfocado en conducción técnica, precisión y adaptación a distintos terrenos." }
+      { title:"Assassin’s Creed Black Flag Resynced", genre:"accion", desc:"Aventura de acción ambientada en la edad dorada de la piratería, con exploración naval y combates en mar abierto." },
+      { title:"American Truck Simulator", genre:"simulacion", desc:"Simulador de conducción en carretera con rutas extensas, entregas y personalización de camiones." },
+      { title:"ARK: Survival Evolved", genre:"accion", desc:"Juego de supervivencia en un entorno hostil lleno de dinosaurios y criaturas salvajes." },
+      { title:"Baldur’s Gate III", genre:"rpg", desc:"RPG occidental de gran profundidad basado en decisiones, grupo y combates tácticos." },
+      { title:"Battlefleet Gothic Armada II", genre:"estrategia", desc:"Estrategia espacial de gran escala en el universo Warhammer 40,000." },
+      { title:"Battlefleet Gothic Armada Tau Empire", genre:"estrategia", desc:"Contenido relacionado con combates espaciales y la identidad militar del Imperio Tau." },
+      { title:"BioShock Infinite", genre:"accion", desc:"Shooter narrativo ambientado en la ciudad flotante de Columbia." },
+      { title:"Call of Duty: Modern Warfare Remastered", genre:"accion", desc:"Remaster del clásico shooter militar moderno con ritmo cinematográfico." },
+      { title:"Cities: Skylines II", genre:"simulacion", desc:"Simulador de construcción y gestión de ciudades con mayor profundidad sistémica." },
+      { title:"Cyberpunk 2077", genre:"rpg", desc:"RPG de acción ambientado en Night City, una metrópolis futurista dominada por corporaciones." },
+      { title:"Deus Ex: Human Revolution Director’s Cut", genre:"rpg", desc:"RPG de acción con infiltración, decisiones y cibernética en un futuro distópico." },
+      { title:"Disco Elysium: The Final Cut", genre:"rpg", desc:"RPG narrativo profundamente centrado en el diálogo, la psicología y la toma de decisiones." },
+      { title:"Divinity: Original Sin 2 Definitive Edition", genre:"rpg", desc:"RPG táctico de fantasía con enorme libertad de resolución y desarrollo de grupo." },
+      { title:"DOOM Eternal", genre:"accion", desc:"Shooter frenético y agresivo basado en movilidad, precisión y masacres demoníacas." },
+      { title:"Dragon Age: Origins Ultimate Edition", genre:"rpg", desc:"RPG clásico de fantasía con elecciones, relaciones y una gran campaña." },
+      { title:"DUSK", genre:"accion", desc:"Shooter retro inspirado en los grandes clásicos noventeros." },
+      { title:"Elden Ring", genre:"rpg", desc:"RPG de acción en mundo abierto con exploración libre y combates exigentes." },
+      { title:"Euro Truck Simulator 2", genre:"simulacion", desc:"Simulador de transporte por carretera con rutas europeas y gestión de empresa." },
+      { title:"Fallout 4", genre:"rpg", desc:"RPG posapocalíptico con exploración, combate y construcción de asentamientos." },
+      { title:"Fallout: New Vegas Ultimate Edition", genre:"rpg", desc:"RPG de mundo abierto muy valorado por su libertad de decisiones y facciones." },
+      { title:"Far Cry 3 Complete Collection", genre:"accion", desc:"Shooter de mundo abierto ambientado en una isla tropical dominada por la violencia." },
+      { title:"Farming Simulator 25", genre:"simulacion", desc:"Simulador agrícola centrado en maquinaria, cultivos y economía rural." },
+      { title:"Farthest Frontier", genre:"estrategia", desc:"Construcción y supervivencia de asentamientos con gestión de recursos y defensa." },
+      { title:"Final Fantasy X/X-2 HD Remaster", genre:"rpg", desc:"Colección remasterizada de dos JRPG muy recordados por historia y sistema de progresión." },
+      { title:"Forever Skies", genre:"simulacion", desc:"Aventura de supervivencia y exploración en un entorno devastado." },
+      { title:"Forza Horizon 5", genre:"accion", desc:"Juego de conducción en mundo abierto centrado en velocidad, exploración y variedad de vehículos." },
+      { title:"Forza Horizon 6", genre:"accion", desc:"Entrada listada como futura o pendiente dentro de la colección." },
+      { title:"Forza Motorsport 2023", genre:"accion", desc:"Juego de carreras más enfocado en circuito y rendimiento técnico." },
+      { title:"Foundation", genre:"estrategia", desc:"Juego de construcción medieval con planificación orgánica de ciudades." },
+      { title:"Frets On Fire", genre:"accion", desc:"Juego musical inspirado en experiencias de ritmo y guitarra." },
+      { title:"Frostpunk", genre:"estrategia", desc:"Estrategia y gestión de supervivencia en una ciudad congelada." },
+      { title:"Frostpunk 2", genre:"estrategia", desc:"Secuela que amplía la escala política y social del original." },
+      { title:"Grim Dawn", genre:"rpg", desc:"Action RPG isométrico con mucho loot, builds y ambientación oscura." },
+      { title:"GTA San Andreas", genre:"accion", desc:"Clásico de mundo abierto con conducción, disparos y exploración urbana." },
+      { title:"Gunfire Reborn", genre:"accion", desc:"Shooter roguelite con cooperativo, progresión por partidas y poderes." },
+      { title:"Half-Life 2 Lost Coast", genre:"accion", desc:"Experiencia breve vinculada al universo Half-Life y a la tecnología gráfica de Valve." },
+      { title:"Halo: The Master Chief Collection", genre:"accion", desc:"Compilación esencial para jugar varias entregas de Halo." },
+      { title:"Hollow Knight: Silksong", genre:"accion", desc:"Título esperado relacionado con la fórmula metroidvania de Hollow Knight." },
+      { title:"Hytale Online", genre:"simulacion", desc:"Proyecto orientado a creatividad, construcción y exploración en formato sandbox." },
+      { title:"Kingdom Come: Deliverance", genre:"rpg", desc:"RPG medieval realista que prioriza inmersión histórica y decisiones narrativas." },
+      { title:"Lies of P", genre:"rpg", desc:"Soulslike inspirado en Pinocho con ambientación sombría y combate técnico." },
+      { title:"Mass Effect Legendary Edition", genre:"rpg", desc:"Colección remasterizada de una de las trilogías más importantes del RPG espacial." },
+      { title:"Medieval Dynasty", genre:"simulacion", desc:"Supervivencia y gestión medieval con construcción de asentamientos." },
+      { title:"Metro Exodus Enhanced Edition", genre:"accion", desc:"Shooter narrativo postapocalíptico con exploración y supervivencia." },
+      { title:"Mindseye", genre:"accion", desc:"Título de acción listado en la colección con tono contemporáneo o futurista." },
+      { title:"Minecraft", genre:"simulacion", desc:"Sandbox de construcción y supervivencia con total libertad creativa." },
+      { title:"Need for Speed: Carbon", genre:"accion", desc:"Carreras callejeras con progresión por territorio y personalización." },
+      { title:"Need for Speed Heat", genre:"accion", desc:"Carreras arcade con eventos diurnos y persecuciones nocturnas." },
+      { title:"Need for Speed Hot Pursuit Remastered", genre:"accion", desc:"Remaster centrado en persecuciones espectaculares entre corredores y policías." },
+      { title:"Need for Speed Most Wanted", genre:"accion", desc:"Uno de los títulos más recordados de carreras urbanas y persecuciones policiales." },
+      { title:"Need for Speed Most Wanted Limited Edition", genre:"accion", desc:"Entrega centrada en velocidad, rivalidad y libertad para recorrer la ciudad." },
+      { title:"NieR: Automata Game of the YoRHa Edition", genre:"rpg", desc:"Action RPG de ciencia ficción con combate ágil y tono filosófico." },
+      { title:"No Man’s Sky", genre:"simulacion", desc:"Exploración espacial procedural, supervivencia y construcción de bases." },
+      { title:"Palworld", genre:"accion", desc:"Supervivencia y captura de criaturas con automatización y combate." },
+      { title:"Pathfinder: Wrath of the Righteous", genre:"rpg", desc:"RPG isométrico de gran complejidad táctica y narrativa." },
+      { title:"Pillars of Eternity II: Deadfire", genre:"rpg", desc:"RPG de fantasía con exploración marítima y narrativa reactiva." },
+      { title:"RimWorld", genre:"estrategia", desc:"Simulador de colonia donde la narrativa surge de relaciones y crisis." },
+      { title:"Saints Row 2022", genre:"accion", desc:"Mundo abierto con acción exagerada, vehículos, caos y control territorial." },
+      { title:"Saints Row IV Game of the Century Edition", genre:"accion", desc:"Entrega con superpoderes, humor absurdo y acción sandbox desatada." },
+      { title:"Slime Rancher 2", genre:"simulacion", desc:"Simulador relajado de granja y exploración con criaturas gelatinosas." },
+      { title:"Star Wars Knights of the Old Republic Collection", genre:"rpg", desc:"Colección de un RPG clásico ambientado en Star Wars." },
+      { title:"Stardew Valley", genre:"simulacion", desc:"Simulador de granja con relaciones sociales, exploración y progreso personal." },
+      { title:"Subnautica", genre:"simulacion", desc:"Supervivencia submarina en un planeta alienígena." },
+      { title:"Subnautica 2", genre:"simulacion", desc:"Continuación o futura expansión de la experiencia de supervivencia submarina." },
+      { title:"Subnautica: Below Zero", genre:"simulacion", desc:"Expansión independiente con entorno más helado." },
+      { title:"System Shock 2", genre:"accion", desc:"Clásico de ciencia ficción y terror con fuerte componente inmersivo." },
+      { title:"The Elder Scrolls IV: Oblivion", genre:"rpg", desc:"RPG de mundo abierto ambientado en Cyrodiil, conocido por gremios y exploración." },
+      { title:"The Elder Scrolls IV: Oblivion - Knights of the Nine", genre:"rpg", desc:"Expansión centrada en reliquias sagradas y conflicto espiritual." },
+      { title:"The Elder Scrolls IV: Oblivion - Shivering Isles", genre:"rpg", desc:"Expansión ambientada en el reino de Sheogorath con una identidad fantástica muy marcada." },
+      { title:"The Elder Scrolls IV: Oblivion Expansiones", genre:"rpg", desc:"Contenido adicional que amplía regiones, historias y sistemas del juego base." },
+      { title:"The Elder Scrolls V: Skyrim Special Edition", genre:"rpg", desc:"RPG de fantasía en mundo abierto enormemente popular." },
+      { title:"The Witcher 3: Wild Hunt", genre:"rpg", desc:"RPG de acción de mundo abierto con fuerte peso narrativo y fantasía madura." },
+      { title:"theHunter: Call of the Wild", genre:"simulacion", desc:"Simulador de caza con entornos amplios y ritmo pausado." },
+      { title:"Titanfall 2", genre:"accion", desc:"Shooter conocido por su excelente movilidad y gran campaña." },
+      { title:"Valkyrie Elysium", genre:"rpg", desc:"RPG de acción inspirado en la mitología nórdica." },
+      { title:"Warhammer 40,000 Space Marine 2", genre:"accion", desc:"Secuela orientada a ampliar el espectáculo bélico del universo Warhammer 40,000." },
+      { title:"Warhammer 40,000 Space Marine Collection", genre:"accion", desc:"Acción en tercera persona ambientada en el brutal universo Warhammer 40,000." },
+      { title:"Wolfenstein: The New Order", genre:"accion", desc:"Shooter narrativo de corte alternativo donde una dictadura mundial domina el planeta." },
+      { title:"WRC 10", genre:"accion", desc:"Juego de rally enfocado en conducción técnica y precisión." }
     ];
 
     const moviesData = [
-      { title:"21 Jump Street", category:"accion", year:"2012", desc:"Dos policías poco astutos son enviados de encubierto a un instituto para desmantelar una red de drogas. Es una comedia de acción muy apoyada en la química entre sus protagonistas y en el humor absurdo de la situación." },
-      { title:"22 Jump Street", category:"accion", year:"2014", desc:"Schmidt y Jenko vuelven a infiltrarse, esta vez en una universidad, para seguir el rastro de una nueva droga. La secuela amplía la fórmula de la primera con más ironía, descontrol y autoparodia." },
-      { title:"50 Primeras Citas", category:"romance", year:"2004", desc:"Un veterinario marino se enamora de una mujer con amnesia a corto plazo y debe volver a conquistarla todos los días. Es una comedia romántica dulce, ligera y muy recordada por su premisa entrañable." },
-      { title:"50 Sombras de Grey", category:"romance", year:"2015", desc:"Anastasia Steele ve cómo su vida cambia por completo tras conocer a Christian Grey, un millonario tan enigmático como atormentado. La película mezcla romance, deseo, poder y drama emocional." },
-      { title:"A Dos Metros de Ti", category:"romance", year:"2019", desc:"Dos adolescentes con fibrosis quística se enamoran mientras viven ingresados en un hospital, pero no pueden acercarse físicamente sin ponerse en riesgo. Es una historia romántica centrada en la distancia, la fragilidad y el deseo de vivir intensamente." },
-      { title:"After Earth", category:"accion", year:"2013", desc:"Padre e hijo se estrellan en una Tierra abandonada y extremadamente peligrosa mil años después de que la humanidad la dejara atrás. La película combina supervivencia, ciencia ficción y vínculo familiar en un entorno hostil." },
-      { title:"Aladdin", category:"animacion", year:"2019", desc:"Un joven callejero encuentra una lámpara mágica y se presenta como príncipe para intentar conquistar a Jasmine. La historia mantiene el espíritu de fantasía, romance y aventura del clásico cuento." },
-      { title:"Angry Birds 2", category:"animacion", year:"2019", desc:"Los pájaros que no vuelan y los cerdos verdes forman una alianza inesperada para combatir una nueva amenaza común. Es una cinta familiar rápida, colorida y con humor muy desenfadado." },
-      { title:"Ant-Man", category:"marvel", year:"2015", desc:"Scott Lang, un ladrón con buenas intenciones, obtiene un traje capaz de reducir su tamaño mientras incrementa su fuerza. La película combina humor, robos tecnológicos y una historia de redención dentro de una aventura más ligera del universo Marvel." },
-      { title:"Ant-Man and the Wasp", category:"marvel", year:"2018", desc:"Scott Lang vuelve a unirse con Hope van Dyne para una misión urgente que los lleva a profundizar en los secretos del Reino Cuántico. Mantiene un tono ágil, divertido y más familiar que otras entregas del UCM." },
-      { title:"Ant-Man and the Wasp: Quantumania", category:"marvel", year:"2023", desc:"La familia de Scott Lang es arrastrada al Reino Cuántico, donde queda atrapada en un entorno desconocido y peligroso. La historia introduce amenazas multiversales más grandes y un tono más ambicioso dentro de la saga." },
-      { title:"Aquaman", category:"dc", year:"2018", desc:"Arthur Curry descubre su verdadero destino como heredero de Atlantis y debe aceptar su papel para evitar un conflicto mayor entre el océano y la superficie. Es una aventura de superhéroes fantástica, acuática y visualmente muy marcada." },
-      { title:"Avatar: El último maestro del aire", category:"accion", year:"2026", desc:"Adaptación cinematográfica del universo animado en la que Aang debe dominar los cuatro elementos para devolver el equilibrio al mundo. La propuesta gira en torno a fantasía, aventura y destino heroico." },
-      { title:"Avengers", category:"marvel", year:"2012", desc:"Nick Fury reúne a los héroes más poderosos de la Tierra para detener a Loki y una invasión alienígena. Supone el gran cruce inicial del UCM y el momento en que el concepto de los Vengadores se consolida como equipo." },
-      { title:"Avengers: Age of Ultron", category:"marvel", year:"2015", desc:"Cuando Tony Stark impulsa un proyecto de inteligencia artificial que sale mal, los Vengadores deben enfrentarse a Ultron. La película combina acción a gran escala con conflictos internos y nuevas incorporaciones al equipo." },
-      { title:"Avengers: Endgame", category:"marvel", year:"2019", desc:"Después del desastre causado por Thanos, los héroes supervivientes intentan revertir el daño y cerrar una era completa del universo Marvel. Funciona como culminación emocional, nostálgica y épica de una larga saga." },
-      { title:"Avengers: Infinity War", category:"marvel", year:"2018", desc:"Los Vengadores y sus aliados dispersos por el universo se enfrentan al titán Thanos, que busca reunir las Gemas del Infinito. Es una cinta coral de enorme escala donde el sacrificio y la derrota marcan el tono." },
-      { title:"Bad Boys for Life", category:"accion", year:"2020", desc:"Mike Lowrey y Marcus Burnett regresan para enfrentarse a una nueva amenaza criminal en Miami. Mantiene el tono de acción, humor y camaradería propio de la saga." },
-      { title:"Battleship", category:"accion", year:"2012", desc:"Una flota naval humana debe hacer frente a una fuerza extraterrestre con intenciones destructivas en el océano. La película apuesta por el espectáculo militar y la ciencia ficción de gran escala." },
-      { title:"Beauty and the Beast", category:"romance", year:"2017", desc:"Una joven brillante acepta vivir en el castillo de una bestia para salvar a su padre y termina descubriendo el alma que se esconde tras la criatura. Es una historia clásica de romance, empatía y transformación." },
-      { title:"Black Adam", category:"dc", year:"2022", desc:"Un antiguo antihéroe con el poder de los dioses es liberado en la era moderna y ejerce una justicia brutal y directa. La cinta presenta una figura de poder inmenso dentro del universo DC." },
-      { title:"Black Panther: Wakanda Forever", category:"marvel", year:"2022", desc:"Wakanda intenta proteger su legado tras la muerte de T’Challa, mientras nuevas amenazas obligan a redefinir liderazgo, duelo y poder. La película combina homenaje, conflicto político y expansión del universo de Wakanda." },
-      { title:"Black Widow", category:"marvel", year:"2021", desc:"Natasha Romanoff se enfrenta a las heridas de su pasado y a una conspiración ligada a su vida antes de los Vengadores. La película mezcla espionaje, acción física y una mirada más íntima del personaje." },
-      { title:"Bloodshot", category:"accion", year:"2020", desc:"Un soldado asesinado vuelve a la vida gracias a nanotecnología que le concede superfuerza y una regeneración casi instantánea. Es una cinta de venganza y ciencia ficción con acción directa." },
-      { title:"Bohemian Rhapsody", category:"drama", year:"2018", desc:"Relato del ascenso de Queen y de la figura de Freddie Mercury, centrado en fama, identidad, excesos y talento. La película funciona como homenaje musical a una de las bandas más icónicas del rock." },
-      { title:"Boda Sangrienta", category:"accion", year:"2019", desc:"Una joven novia descubre que la tradición familiar de sus nuevos parientes consiste en una cacería mortal. La película mezcla terror, humor negro y supervivencia con un tono muy entretenido." },
-      { title:"Boda Sangrienta 2", category:"accion", year:"2026", desc:"Continuación planteada de la historia de supervivencia iniciada en la primera película, manteniendo el tono sangriento, irónico y frenético." },
-      { title:"Brave", category:"animacion", year:"2012", desc:"La princesa Mérida desafía una antigua costumbre de su reino y desencadena una maldición que deberá revertir. Es una historia de independencia, familia y responsabilidad ambientada en una Escocia mítica." },
-      { title:"Captain America: Civil War", category:"marvel", year:"2016", desc:"La división ideológica sobre el control de los superhéroes rompe la unidad entre los Vengadores. La película enfrenta a Capitán América e Iron Man en uno de los conflictos más importantes del universo Marvel." },
-      { title:"Captain America: The First Avenger", category:"marvel", year:"2011", desc:"Steve Rogers pasa de ser un joven frágil pero decidido a convertirse en el supersoldado Capitán América durante la Segunda Guerra Mundial. Presenta el origen clásico del héroe y su lucha contra HYDRA." },
-      { title:"Captain America: The Winter Soldier", category:"marvel", year:"2014", desc:"Steve Rogers descubre una gran conspiración dentro de S.H.I.E.L.D. mientras debe enfrentarse a una figura letal de su pasado. Destaca por su tono de thriller político y acción muy sólida." },
-      { title:"Captain Marvel", category:"marvel", year:"2019", desc:"Carol Danvers descubre su verdadero origen y se convierte en una de las heroínas más poderosas del cosmos. La historia mezcla acción espacial, identidad y guerra alienígena." },
-      { title:"Cars", category:"animacion", year:"2006", desc:"Un coche de carreras arrogante queda atrapado en un pueblo olvidado de la Ruta 66 y aprende el valor de la amistad, la humildad y la comunidad." },
-      { title:"Cinderella", category:"romance", year:"2015", desc:"Ella intenta mantener la bondad frente a la crueldad de su entorno hasta que una oportunidad mágica cambia su destino. Es una reinterpretación elegante y clásica del cuento." },
-      { title:"Clash of the Titans", category:"accion", year:"2010", desc:"Perseo emprende una misión contra criaturas y fuerzas del inframundo para proteger a la humanidad. La película mezcla mitología griega, aventura y espectáculo fantástico." },
-      { title:"Coco", category:"animacion", year:"2017", desc:"Miguel viaja accidentalmente a la Tierra de los Muertos en busca de la verdad sobre su familia y su pasión por la música. Es una historia muy emotiva sobre memoria, raíces y legado." },
-      { title:"Collateral Beauty", category:"drama", year:"2016", desc:"Un ejecutivo en duelo comienza a escribir cartas al Amor, al Tiempo y a la Muerte mientras quienes le rodean intentan ayudarlo. El drama gira en torno a la pérdida y la reconexión humana." },
-      { title:"Cómo Entrenar a Tu Dragón", category:"animacion", year:"Saga", desc:"La historia de Hipo y Chimuelo transforma la relación entre vikingos y dragones a través de amistad, valentía y crecimiento. La trilogía destaca por emoción, aventura y evolución de personajes." },
-      { title:"Cruella", category:"accion", year:"2021", desc:"Explora los orígenes de Cruella de Vil dentro del competitivo mundo de la moda, mostrando una protagonista ambiciosa, rebelde y peligrosamente creativa." },
-      { title:"Culpa Mía", category:"romance", year:"2023", desc:"Noah se muda a un entorno completamente nuevo y termina viviendo una relación prohibida marcada por atracción intensa, choques emocionales y conflicto familiar." },
-      { title:"Daddy's Home", category:"comedia", year:"2015", desc:"Un padrastro tranquilo debe competir por el afecto de sus hijos cuando regresa el padre biológico, mucho más carismático y problemático. Es una comedia familiar de rivalidad y caos doméstico." },
-      { title:"Deadpool", category:"marvel", year:"2016", desc:"Wade Wilson se convierte en un antihéroe extremadamente violento, sarcástico e imprevisible tras un experimento fallido. La película rompe con el tono clásico del cine de superhéroes gracias a su humor irreverente." },
-      { title:"Deadpool & Wolverine", category:"marvel", year:"2024", desc:"El mercenario bocazas se une a Wolverine en una aventura marcada por violencia, humor salvaje y el choque de dos personalidades explosivas dentro del universo Marvel." },
-      { title:"Dirty Grandpa", category:"comedia", year:"2016", desc:"Un joven formal es arrastrado por su abuelo a un viaje disparatado poco antes de su boda. La cinta apuesta por humor adulto, incomodidad cómica y exceso." },
-      { title:"Divergente", category:"accion", year:"2014", desc:"En una sociedad dividida por facciones, una joven descubre que no encaja en ninguna de ellas. La historia plantea una distopía basada en control social, identidad y rebelión." },
-      { title:"Doctor Strange", category:"marvel", year:"2016", desc:"Un neurocirujano brillante pero arrogante pierde el rumbo tras un accidente y encuentra una nueva realidad al adentrarse en las artes místicas. Introduce la magia y las dimensiones alternativas dentro del UCM." },
-      { title:"Doctor Strange in the Multiverse of Madness", category:"marvel", year:"2022", desc:"Doctor Strange se adentra en distintas realidades para proteger a América Chavez y detener una amenaza nacida del dolor y la corrupción. Aporta una faceta más oscura y caótica al multiverso de Marvel." },
-      { title:"Dog", category:"drama", year:"2022", desc:"Un exmilitar recorre la costa del Pacífico junto a una perra adiestrada para asistir al funeral de un compañero. Es una road movie emocional sobre duelo, compañía y conexión." },
-      { title:"Dracula Untold", category:"accion", year:"2014", desc:"Vlad Tepes hace un pacto oscuro para salvar a su reino y a su familia, convirtiéndose en la figura legendaria de Drácula. Mezcla fantasía, acción y origen monstruoso." },
-      { title:"El diablo viste a la moda 2", category:"drama", year:"Próximamente", desc:"Secuela ambientada en el competitivo mundo de la alta moda, donde poder, prestigio y decisiones profesionales vuelven a situar a Miranda Priestly en el centro del escenario." },
-      { title:"Elio", category:"animacion", year:"2025", desc:"Un niño imaginativo es transportado al espacio y confundido con el embajador de la Tierra. La propuesta mezcla aventura galáctica, humor y descubrimiento personal." },
-      { title:"En guerra con mi abuelo", category:"comedia", year:"2017", desc:"Un niño decide declararle la guerra a su abuelo cuando este se muda a la casa familiar y se queda con su habitación. La película convierte un conflicto doméstico en una batalla cómica." },
-      { title:"Ender's Game", category:"accion", year:"2013", desc:"Un niño prodigio es reclutado por el ejército internacional para liderar la defensa de la humanidad frente a una amenaza alienígena. Combina estrategia, ciencia ficción y presión psicológica." },
-      { title:"Entre Navajas y Secretos", category:"drama", year:"2019", desc:"Un detective investiga la misteriosa muerte del patriarca de una familia millonaria llena de tensiones, mentiras e intereses ocultos. Es un elegante misterio de crimen con mucho ingenio." },
-      { title:"Eternals", category:"marvel", year:"2021", desc:"Seres inmortales que han observado a la humanidad durante milenios salen de las sombras para enfrentar una amenaza ancestral. La película amplía el lado cósmico y mitológico del universo Marvel." },
-      { title:"Familia al Instante", category:"comedia", year:"2019", desc:"Una pareja decide adoptar a tres hermanos y descubre de golpe todo el caos, ternura y dificultad de formar una familia. Combina humor con momentos afectivos muy humanos." },
-      { title:"Fast and Furious X", category:"accion", year:"2023", desc:"Dom Toretto y su familia se enfrentan al enemigo más letal que jamás han conocido, decidido a destruirlo todo. Mantiene el tono de acción extrema, velocidad y lealtad familiar de la franquicia." },
-      { title:"Finch", category:"drama", year:"2021", desc:"En un mundo posapocalíptico, un inventor enfermo crea un robot para que cuide de su perro cuando él ya no esté. Es una historia íntima sobre legado, afecto y supervivencia." },
-      { title:"Focus: Maestros de la Estafa", category:"drama", year:"2015", desc:"Un veterano estafador toma a una joven bajo su tutela, pero las emociones complican su relación profesional. La película mezcla romance, manipulación y juegos de engaño." },
-      { title:"Ford v Ferrari", category:"drama", year:"2019", desc:"Relata la historia real de Carroll Shelby y Ken Miles mientras construyen un coche capaz de derrotar a Ferrari en Le Mans. Es un drama deportivo sobre ambición, talento y rivalidad." },
-      { title:"Fuga de Cerebros", category:"comedia", year:"Saga", desc:"Comedia juvenil española en la que un grupo de amigos viaja al extranjero persiguiendo el amor, provocando enredos, situaciones absurdas y caos constante." },
-      { title:"Furies", category:"accion", year:"2023", desc:"Tres mujeres se unen para enfrentarse a una siniestra red criminal en el Saigón de los años noventa. La propuesta combina venganza, acción y una atmósfera más violenta." },
-      { title:"G.I. Joe: Rise of Cobra", category:"accion", year:"2009", desc:"Un equipo militar de élite utiliza tecnología avanzada para enfrentarse a la organización Cobra. La película se apoya en acción militar, gadgets y conflicto global." },
-      { title:"Ghost Rider", category:"marvel", year:"2007", desc:"Un piloto de acrobacias vende su alma y se transforma en un vengador infernal. Mezcla acción sobrenatural, maldiciones y el lado más oscuro del cómic." },
-      { title:"Ghost Rider: Spirit of Vengeance", category:"marvel", year:"2011", desc:"Segunda entrega centrada en Johnny Blaze y su lucha por controlar al espíritu de la venganza mientras intenta impedir un plan demoníaco." },
-      { title:"Gigantes de Acero", category:"accion", year:"2011", desc:"En un futuro donde los robots han reemplazado a los boxeadores humanos, un expúgil y su hijo entrenan a un robot aparentemente menor para competir. Mezcla ciencia ficción, deporte y relación paterno-filial." },
-      { title:"Gods of Egypt", category:"accion", year:"2016", desc:"Un héroe mortal se alía con Horus para detener al dios Set y salvar al mundo. La película apuesta por mitología egipcia, fantasía y espectáculo visual." },
-      { title:"Godzilla vs. Kong", category:"accion", year:"2021", desc:"Los dos titanes más poderosos del planeta se enfrentan en un combate monumental mientras una amenaza mayor se oculta tras el conflicto. Es puro cine de monstruos y destrucción épica." },
-      { title:"Gran Turismo", category:"accion", year:"2023", desc:"Un joven jugador de videojuegos de carreras logra convertir su talento virtual en una carrera profesional real. Es una historia de superación, velocidad y oportunidad inesperada." },
-      { title:"Greenland", category:"accion", year:"2021", desc:"Una familia lucha por sobrevivir mientras un cometa capaz de destruir el planeta se aproxima a la Tierra. La película mezcla desastre global, tensión constante y drama familiar." },
-      { title:"Guardians of the Galaxy", category:"marvel", year:"2014", desc:"Un grupo de marginados intergalácticos se ve forzado a colaborar cuando una poderosa esfera atrae la atención de varios enemigos. Su gran fortaleza está en el humor, la química del grupo y la aventura espacial." },
-      { title:"Guardians of the Galaxy Vol. 2", category:"marvel", year:"2017", desc:"Los Guardianes recorren el cosmos mientras Peter Quill descubre más sobre su padre y sobre sí mismo. La película profundiza en los vínculos del grupo y en el concepto de familia encontrada." },
-      { title:"Guardians of the Galaxy Vol. 3", category:"marvel", year:"2023", desc:"El equipo se une para salvar a Rocket en una misión que pone a prueba sus lazos y su futuro como grupo. Tiene un tono más emocional y sirve como cierre importante para varios personajes." },
-      { title:"Grown Ups / Son Como Niños", category:"comedia", year:"Saga", desc:"Cinco amigos de la infancia se reencuentran años después y pasan tiempo con sus familias, dando pie a bromas, nostalgia y caos cotidiano." },
-      { title:"Hercules", category:"accion", year:"2014", desc:"El semidiós Hércules lidera a un grupo de mercenarios para ayudar a un rey en una guerra. La película mezcla acción, mitología y un héroe clásico en clave épica." },
-      { title:"Hitch", category:"romance", year:"2005", desc:"Un experto en conquistar ayuda a hombres tímidos a relacionarse con las mujeres que aman, hasta que él mismo se ve atrapado por sus propios sentimientos. Comedia romántica muy popular." },
-      { title:"Hotel Transylvania", category:"animacion", year:"Saga", desc:"El conde Drácula dirige un hotel para monstruos donde pueden vivir tranquilos lejos de los humanos. La saga mezcla humor familiar, monstruos clásicos y enredos sentimentales." },
-      { title:"How To Be A Latin Lover", category:"comedia", year:"2017", desc:"Un seductor profesional en decadencia debe empezar de cero cuando su vida cómoda se derrumba. Comedia ligera sobre oportunismo, familia y reinvención." },
-      { title:"I Am Legend", category:"accion", year:"2007", desc:"El último superviviente aparente de un virus devastador vive en Nueva York buscando una cura mientras se enfrenta a criaturas nocturnas. Es una mezcla de ciencia ficción, soledad y supervivencia." },
-      { title:"In The Heart Of The Sea", category:"drama", year:"2015", desc:"La historia real del ballenero Essex y del ataque de una enorme ballena que inspiró Moby Dick. La película explora supervivencia, mar abierto y obsesión." },
-      { title:"Independence Day 2: Resurgence", category:"accion", year:"2016", desc:"La Tierra aprovecha tecnología alienígena recuperada para prepararse ante el regreso de los invasores. Es una secuela de destrucción masiva, ciencia ficción y resistencia global." },
-      { title:"Insurgente", category:"accion", year:"2015", desc:"Continuación del conflicto iniciado en Divergente, donde la protagonista se enfrenta a secretos más profundos del sistema que domina su mundo." },
-      { title:"Intercambiados", category:"comedia", year:"2026", desc:"Comedia de enredos basada en el intercambio accidental de cuerpos entre dos personas, generando caos, aprendizaje y situaciones absurdas." },
-      { title:"Invincible: Atomic Eve", category:"accion", year:"2023", desc:"Especial centrado en los orígenes de Atomic Eve y en el trasfondo más doloroso de su historia. Se enfoca en identidad, trauma y surgimiento del personaje." },
-      { title:"Iron Man", category:"marvel", year:"2008", desc:"Tony Stark, genio armamentístico y multimillonario, crea una armadura tecnológica para escapar de sus captores y redefine su vida como héroe. Es la película que dio inicio oficial al UCM." },
-      { title:"Iron Man 2", category:"marvel", year:"2010", desc:"Con su identidad ya revelada, Tony Stark debe lidiar con nuevas presiones, rivales y amenazas tecnológicas. Amplía el mundo del personaje mientras lo muestra en una etapa más vulnerable." },
-      { title:"Iron Man 3", category:"marvel", year:"2013", desc:"Tras sufrir las consecuencias de los eventos de Avengers, Tony Stark enfrenta a un enemigo que destruye su mundo personal. Mezcla trauma, ingenio y búsqueda de identidad." },
-      { title:"It", category:"accion", year:"2017", desc:"Un grupo de niños aterrorizados debe enfrentarse a un mal ancestral que adopta la forma de un payaso. La película combina miedo, amistad y trauma infantil." },
-      { title:"John Wick", category:"accion", year:"Saga", desc:"Un legendario asesino retirado vuelve al inframundo criminal tras una tragedia personal. La saga es conocida por su acción coreografiada, su estilo visual y su mundo criminal muy marcado." },
-      { title:"Jumanji: El Siguiente Nivel", category:"accion", year:"2020", desc:"Los protagonistas regresan al juego para rescatar a uno de los suyos, pero descubren que las reglas y los escenarios han cambiado. Mantiene humor, aventura y ritmo familiar." },
-      { title:"Jungle Cruise", category:"accion", year:"2021", desc:"Una botánica y un capitán de barco recorren la selva amazónica en busca de un árbol con propiedades curativas. Aventura clásica con humor, fantasía y exploración." },
-      { title:"Jurassic World / Saga Jurásica", category:"accion", year:"Saga", desc:"La franquicia de dinosaurios clonados, desde Parque Jurásico hasta la dominación global. Combina ciencia fuera de control, criaturas prehistóricas y supervivencia." },
-      { title:"Justice League", category:"dc", year:"2021", desc:"Batman y Wonder Woman reúnen a un grupo de metahumanos para defender al mundo de una amenaza cósmica. Es la gran reunión coral del universo DC moderno." },
-      { title:"La Guerra del Planeta de los Simios", category:"accion", year:"2017", desc:"César y su comunidad se ven forzados a un conflicto definitivo contra un ejército humano liderado por un coronel implacable. La película mezcla épica bélica y drama emocional." },
-      { title:"La Novia Cadáver", category:"animacion", year:"2005", desc:"Un joven es llevado al mundo de los muertos tras casarse por accidente con una novia fantasma. Es una fantasía oscura, romántica y visualmente muy particular." },
-      { title:"La Propuesta", category:"romance", year:"2009", desc:"Una ejecutiva canadiense obliga a su asistente a fingir un matrimonio para evitar su deportación. La película desarrolla una comedia romántica basada en tensión, sarcasmo y afecto inesperado." },
-      { title:"Lady and the Tramp", category:"romance", year:"2019", desc:"Versión en acción real del clásico romance entre una perra refinada y un perro callejero. Mantiene el tono tierno y familiar de la historia original." },
-      { title:"Las Damas Primero", category:"comedia", year:"2026", desc:"Comedia centrada en la complicidad, rivalidad y dinámicas personales entre un grupo de amigas. Se orienta a humor de grupo y relaciones cruzadas." },
-      { title:"Las Novias de Mis Amigos", category:"comedia", year:"2014", desc:"Tres amigos en Nueva York prometen permanecer solteros, pero sus propias relaciones sentimentales ponen a prueba el pacto. Comedia romántica urbana sobre amistad y madurez." },
-      { title:"Leave the World Behind", category:"drama", year:"2023", desc:"Unas vacaciones familiares se ven alteradas por la llegada de dos desconocidos que advierten sobre un ciberataque catastrófico. La película trabaja la incomodidad, la incertidumbre y el colapso progresivo." },
-      { title:"Leal", category:"accion", year:"2016", desc:"Tercera parte de la saga Divergente, que expande el conflicto más allá de la ciudad y profundiza en el origen del sistema social que marcó toda la historia." },
-      { title:"Lightyear", category:"animacion", year:"2022", desc:"Relata el origen del legendario Guardián Espacial que inspiró al famoso juguete de Toy Story. Mezcla aventura espacial, exploración y heroísmo dentro del universo ampliado de Pixar." },
-      { title:"Lilo & Stitch", category:"animacion", year:"2025", desc:"Adaptación en vivo de la historia de una niña hawaiana y su caótica mascota alienígena, centrada en familia, pertenencia y el significado de 'ohana'." },
-      { title:"Logan", category:"marvel", year:"2017", desc:"Un Wolverine envejecido y cansado intenta proteger a una joven mutante mientras cuida de un deteriorado Profesor X. Es una visión más cruda, íntima y emocional del personaje." },
-      { title:"Los Croods", category:"animacion", year:"Saga", desc:"Una familia prehistórica debe abandonar su cueva y descubrir un mundo lleno de paisajes desconocidos, peligros y cambios. La saga combina humor, aventura y crecimiento familiar." },
-      { title:"Love and Monsters", category:"accion", year:"2020", desc:"En un planeta dominado por monstruos, un joven decide arriesgarlo todo para recorrer una enorme distancia y reencontrarse con su antigua novia. Es una mezcla de aventura, humor y madurez personal." },
-      { title:"Luck", category:"animacion", year:"2022", desc:"La persona más desafortunada del mundo tropieza con la Tierra de la Suerte y debe ayudar a criaturas mágicas para cambiar su destino. La película gira en torno a azar, esperanza y optimismo." },
-      { title:"Lucy", category:"accion", year:"2014", desc:"Una mujer obligada a transportar una droga experimental desarrolla habilidades extraordinarias cuando la sustancia entra en su organismo. La película mezcla acción, ciencia ficción y evolución mental." },
-      { title:"M3GAN", category:"accion", year:"2022", desc:"Una muñeca con inteligencia artificial diseñada para proteger a una niña comienza a desarrollar una conciencia peligrosa y letal. Combina terror tecnológico, sátira y thriller." },
-      { title:"Maleficent", category:"animacion", year:"Saga", desc:"Relectura del universo de La Bella Durmiente desde la perspectiva de Maléfica, explorando sus heridas, su poder y su relación con Aurora. Mezcla fantasía, drama y redención." },
-      { title:"Mamá o papá", category:"comedia", year:"2021", desc:"Una pareja en proceso de divorcio compite para convencer a sus hijos de que no quieran vivir con ellos. La premisa convierte el conflicto familiar en una comedia de sabotajes y ego." },
-      { title:"Man of Steel", category:"dc", year:"2013", desc:"Clark Kent debe aceptar su identidad como Superman y enfrentarse a una amenaza procedente de su propio planeta. Replantea el origen del héroe con un tono más serio y épico." },
-      { title:"Meg", category:"accion", year:"Saga", desc:"Un equipo de investigación se enfrenta a enormes tiburones prehistóricos ocultos en las profundidades del océano. La saga apuesta por el espectáculo, el peligro marino y la acción exagerada." },
-      { title:"Mentes Poderosas", category:"accion", year:"2018", desc:"Un grupo de adolescentes con habilidades especiales escapa del sistema que los mantiene prisioneros. Es una distopía juvenil sobre poder, miedo y rebeldía." },
-      { title:"Michael", category:"drama", year:"2026", desc:"Película biográfica centrada en la compleja vida personal y carrera artística de Michael Jackson, una de las figuras más influyentes de la música popular." },
-      { title:"Midnight Special", category:"drama", year:"2016", desc:"Un padre huye con su hijo para protegerlo de una secta y del gobierno cuando se descubre que el niño posee habilidades extraordinarias. La película combina ciencia ficción con drama íntimo." },
-      { title:"Minions: The Rise of Gru", category:"animacion", year:"2022", desc:"En los años setenta, un joven Gru intenta abrirse paso entre los grandes villanos con ayuda de sus inseparables Minions. Es una aventura animada de humor y origen criminal caricaturesco." },
-      { title:"Mission: Impossible", category:"accion", year:"Saga", desc:"Ethan Hunt protagoniza una larga serie de misiones imposibles repletas de espionaje, conspiraciones, infiltración y acción espectacular." },
-      { title:"Morbius", category:"marvel", year:"2022", desc:"El doctor Michael Morbius intenta curarse de una extraña enfermedad sanguínea, pero termina transformándose en un vampiro viviente. La historia combina ciencia, tragedia y lado oscuro del universo Marvel." },
-      { title:"Mortal Kombat II", category:"accion", year:"2026", desc:"Continuación del torneo de artes marciales entre guerreros de la Tierra y Outworld, manteniendo el tono de combate extremo y mitología fantástica del videojuego." },
-      { title:"Objetivo: La Casa Blanca", category:"accion", year:"2013", desc:"Un agente del Servicio Secreto debe salvar al presidente de Estados Unidos cuando la Casa Blanca es tomada por terroristas. Es acción militar directa y muy intensa." },
-      { title:"Objetivo: Londres", category:"accion", year:"2015", desc:"Secuela de acción en la que un agente debe proteger a líderes mundiales tras un ataque coordinado en Londres. Mantiene ritmo frenético y destrucción a gran escala." },
-      { title:"Ocho Apellidos Vascos", category:"comedia", year:"2013", desc:"Un joven andaluz se hace pasar por vasco para conquistar a una chica del norte de España. La comedia juega con tópicos regionales, choque cultural y romance." },
-      { title:"Ole, El Viaje de Ferdinand", category:"animacion", year:"2017", desc:"Un toro gigante de buen corazón es confundido con una bestia peligrosa y debe luchar por regresar a su hogar. La película destaca por su tono familiar y su mensaje pacífico." },
-      { title:"Olympus Has Fallen", category:"accion", year:"2013", desc:"Título original en inglés de Objetivo: La Casa Blanca, centrado en el asalto terrorista a la residencia presidencial y el intento desesperado de rescate." },
-      { title:"Overboard", category:"comedia", year:"2018", desc:"Un millonario arrogante cae por la borda y pierde la memoria, lo que permite a una trabajadora vengarse convenciéndolo de que es su esposo. Comedia de enredo y cambio de roles." },
-      { title:"Pacific Rim", category:"accion", year:"Saga", desc:"Pilotos conectados mentalmente controlan robots gigantes para combatir monstruos marinos alienígenas. La saga mezcla mechas, kaijus y destrucción masiva." },
-      { title:"Pinocchio", category:"animacion", year:"2022", desc:"Adaptación en acción real del clásico cuento sobre una marioneta de madera que cobra vida y busca convertirse en un niño de verdad." },
-      { title:"Pirates of the Caribbean", category:"accion", year:"Saga", desc:"Las aventuras del excéntrico Capitán Jack Sparrow recorren mares repletos de maldiciones, piratas, tesoros y criaturas legendarias." },
-      { title:"Promoción Fantasma", category:"comedia", year:"2012", desc:"Un profesor capaz de ver muertos es contratado para ayudar a cinco fantasmas adolescentes a graduarse del instituto. Combina humor juvenil y temática sobrenatural." },
-      { title:"Puss in Boots: The Last Wish", category:"animacion", year:"2022", desc:"El Gato con Botas descubre que ha gastado casi todas sus vidas y emprende un viaje para encontrar un deseo mágico. Es una aventura animada con humor, emoción y reflexión sobre la mortalidad." },
-      { title:"Rápido y Furioso", category:"accion", year:"Saga", desc:"La franquicia mezcla carreras callejeras, robos imposibles, espionaje y el tema recurrente de la familia como núcleo emocional." },
-      { title:"Raya and the Last Dragon", category:"animacion", year:"2021", desc:"Una guerrera solitaria busca al último dragón para restaurar la paz en Kumandra. La película mezcla aventura, fantasía oriental y confianza entre pueblos enfrentados." },
-      { title:"RED", category:"accion", year:"2010", desc:"Un exagente de la CIA reúne a viejos compañeros cuando se convierte en objetivo de una conspiración. Combina humor, veteranos carismáticos y acción de espionaje." },
-      { title:"Resident Evil", category:"accion", year:"Saga", desc:"Alice lucha contra la Corporación Umbrella y hordas de infectados en una larga saga de acción, ciencia ficción y supervivencia zombi." },
-      { title:"Rise of the Planet of the Apes", category:"accion", year:"2011", desc:"La prueba de una sustancia en un chimpancé origina una inteligencia superior en los simios y cambia el destino del mundo. Sirve como inicio moderno de la saga." },
-      { title:"Robot Salvaje", category:"animacion", year:"2024", desc:"Un robot naufraga en una isla desierta y debe aprender a convivir con la naturaleza mientras cría a un pequeño ganso huérfano. Es una historia emotiva sobre adaptación, instinto y cuidado." },
-      { title:"Rush, Pasión y Gloria", category:"drama", year:"2013", desc:"Retrata la intensa rivalidad entre James Hunt y Niki Lauda durante la temporada de Fórmula 1 de 1976. Es un drama deportivo sobre obsesión, talento y riesgo." },
-      { title:"Set Up", category:"drama", year:"Saga", desc:"Saga centrada en baile urbano y jóvenes talentosos que compiten en calles y escuelas, mezclando música, coreografía y superación." },
-      { title:"Shazam!", category:"dc", year:"2019", desc:"Un adolescente recibe el poder de transformarse en un superhéroe adulto al pronunciar una palabra mágica. Combina humor juvenil, fantasía y aventura superheroica." },
-      { title:"Shazam! Fury of the Gods", category:"dc", year:"2023", desc:"Billy Batson y su familia adoptiva con poderes deben enfrentarse a las Hijas de Atlas. Mantiene el tono juvenil, fantástico y familiar de la saga." },
-      { title:"Shutter", category:"accion", year:"2025", desc:"Nueva versión del thriller psicológico y sobrenatural relacionado con fotografías perturbadoras, presencias y culpa." },
-      { title:"Sobre tu cadáver", category:"drama", year:"2026", desc:"Thriller de suspenso e investigación centrado en el hallazgo de un crimen sin resolver, con una atmósfera marcada por secretos y búsqueda de la verdad." },
-      { title:"Sonic the Hedgehog", category:"animacion", year:"Saga", desc:"El erizo azul más veloz del mundo protege la Tierra frente a Robotnik y otros rivales. La saga mezcla comedia, velocidad y aventura familiar." },
-      { title:"Spider-Man: Homecoming", category:"marvel", year:"2017", desc:"Peter Parker intenta equilibrar su vida escolar con su papel como Spider-Man mientras se enfrenta al Buitre. La película enfatiza su juventud y su deseo de estar a la altura de sus héroes." },
-      { title:"Spider-Man: No Way Home", category:"marvel", year:"2021", desc:"Un hechizo fallido abre las puertas del multiverso y obliga a Peter Parker a enfrentarse a villanos y consecuencias procedentes de otras realidades. Es una película muy emocional y nostálgica." },
-      { title:"Star Trek", category:"accion", year:"Saga", desc:"El capitán Kirk y la tripulación del USS Enterprise exploran el espacio enfrentándose a amenazas, misterios y conflictos interestelares. La saga es un clásico de la ciencia ficción." },
-      { title:"Steve y la Liga de los Monstruos", category:"animacion", year:"2022", desc:"En un mundo donde los monstruos compiten en lucha libre, una joven intenta entrenar a un monstruo novato para convertirlo en campeón. Es una aventura familiar deportiva y fantástica." },
-      { title:"The Addams Family 2", category:"animacion", year:"2021", desc:"La excéntrica familia Addams se embarca en un disparatado viaje por carretera lleno de humor negro y rarezas." },
-      { title:"The Bad Guys", category:"animacion", year:"2022", desc:"Un grupo de animales criminales intenta reformarse para convertirse en ciudadanos ejemplares. La película combina humor, acción y carisma de banda." },
-      { title:"The Batman", category:"dc", year:"2022", desc:"Batman investiga la corrupción en Gotham mientras persigue al Acertijo, un asesino en serie que deja un rastro de enigmas. La película apuesta por un tono detectivesco y oscuro." },
-      { title:"The Dark Tower", category:"accion", year:"2017", desc:"Un joven descubre otra dimensión y se une al último Gunslinger para proteger una torre que sostiene el universo. Mezcla fantasía oscura, western y ciencia ficción." },
-      { title:"The Greatest Showman", category:"drama", year:"2017", desc:"Musical inspirado en la vida de P.T. Barnum y en la creación del espectáculo que lo hizo famoso. La película celebra ambición, diferencia y show." },
-      { title:"The Guardians of the Galaxy Holiday Special", category:"marvel", year:"2022", desc:"Especial navideño donde los Guardianes viajan a la Tierra para darle a Peter Quill una celebración memorable. Es una pieza ligera centrada en humor y cercanía entre personajes." },
-      { title:"The Intern", category:"drama", year:"2015", desc:"Un viudo de 70 años se convierte en pasante sénior de una empresa de moda digital y establece una relación inesperadamente valiosa con su jefa. Drama amable sobre experiencia, trabajo y afecto." },
-      { title:"The Jungle Book", category:"animacion", year:"2016", desc:"Mowgli, criado por lobos, debe abandonar la selva mientras es perseguido por Shere Khan. Es una aventura de crecimiento, naturaleza y supervivencia." },
-      { title:"The Karate Kid", category:"accion", year:"2010", desc:"Un chico estadounidense en Pekín aprende artes marciales y disciplina con la guía de un maestro muy particular. La historia combina superación, entrenamiento y honor." },
-      { title:"The Last Manhunt", category:"drama", year:"2022", desc:"Relato basado en hechos reales sobre la persecución en el desierto de dos amantes nativo-americanos en 1909. Tiene tono de western trágico y supervivencia." },
-      { title:"The Last Witch Hunter", category:"accion", year:"2016", desc:"El último cazador de brujas inmortal se enfrenta a una amenaza que podría liberar antiguas fuerzas oscuras sobre la humanidad. Combina fantasía urbana y acción sobrenatural." },
-      { title:"The Lion King", category:"animacion", year:"2019", desc:"Un joven león huye de su hogar tras la muerte de su padre y deberá aprender a aceptar su responsabilidad. Es una historia clásica de madurez, pérdida y destino." },
-      { title:"The Maze Runner", category:"accion", year:"2014", desc:"Un joven despierta en un inmenso laberinto sin recuerdos y debe colaborar con otros para encontrar una salida. Distopía juvenil basada en misterio, supervivencia y conspiración." },
-      { title:"The Mechanic", category:"accion", year:"2011", desc:"Un asesino meticuloso entrena al hijo de su mentor asesinado, generando una relación marcada por violencia, venganza y profesionalismo letal." },
-      { title:"The Sea Beast", category:"animacion", year:"2022", desc:"La vida de un legendario cazador de monstruos marinos cambia cuando una niña se cuela en su barco. Aventura animada sobre leyendas, prejuicios y descubrimiento." },
-      { title:"The Spy Next Door", category:"accion", year:"2010", desc:"Un espía retirado debe cuidar a los hijos de su vecina, pero una misión inesperada convierte la niñera improvisada en caos absoluto. Mezcla acción y comedia familiar." },
-      { title:"The Super Mario Bros. Movie", category:"animacion", year:"2023", desc:"Mario viaja por el Reino Champiñón para encontrar a Luigi y enfrentarse a Bowser. La película celebra el universo clásico de Nintendo con humor y aventura." },
-      { title:"The Twilight Saga", category:"romance", year:"Saga", desc:"El romance imposible entre una joven humana, un vampiro y un hombre lobo da forma a una saga juvenil centrada en deseo, conflicto y triángulo amoroso." },
-      { title:"The Valet", category:"comedia", year:"2022", desc:"Una estrella de cine contrata a un aparcacoches para fingir públicamente una relación con él y ocultar un escándalo. Comedia romántica sobre diferencias sociales y apariencias." },
-      { title:"Thor", category:"marvel", year:"2011", desc:"El orgulloso dios del trueno es desterrado a la Tierra y pierde temporalmente sus poderes, lo que lo obliga a aprender humildad y heroísmo. Introduce Asgard y el lado mitológico del universo Marvel." },
-      { title:"Thor: Love and Thunder", category:"marvel", year:"2022", desc:"Thor se reúne con viejos aliados y con Jane Foster, ahora convertida en Mighty Thor, para enfrentarse a Gorr. La película mezcla aventura cósmica, comedia y pérdida emocional." },
-      { title:"Thor: Ragnarok", category:"marvel", year:"2017", desc:"Thor queda atrapado lejos de Asgard y debe sobrevivir a un entorno gladiatorial mientras intenta impedir la destrucción de su hogar. Reimagina la saga con mucho más humor, color y energía." },
-      { title:"Thor: The Dark World", category:"marvel", year:"2013", desc:"Thor debe unir fuerzas con Loki para frenar a los Elfos Oscuros y evitar la destrucción de los Nueve Reinos. Combina fantasía cósmica, intriga familiar y conflicto épico." },
-      { title:"Top Gun", category:"accion", year:"1986", desc:"Sigue la formación y rivalidades de un grupo de pilotos de élite de la Marina estadounidense. Es un clásico de acción aérea, velocidad y competitividad." },
-      { title:"Top Gun: Maverick", category:"accion", year:"2022", desc:"Décadas después, Maverick regresa para entrenar a una nueva generación de pilotos en una misión extremadamente peligrosa. Mantiene adrenalina, nostalgia y espectacularidad aérea." },
-      { title:"Toy Story", category:"animacion", year:"Saga", desc:"Los juguetes cobran vida cuando los humanos no miran y viven aventuras que mezclan humor, amistad y crecimiento emocional. Una de las sagas más queridas de Pixar." },
-      { title:"Transcendence", category:"drama", year:"2014", desc:"Un científico moribundo sube su conciencia a una supercomputadora y desata consecuencias tecnológicas imprevisibles. Ciencia ficción sobre inteligencia artificial, poder y ética." },
-      { title:"Transformers", category:"accion", year:"Saga", desc:"Autobots y Decepticons libran su guerra en la Tierra entre explosiones, tecnología alienígena y destrucción masiva. La franquicia es sinónimo de espectáculo mecánico." },
-      { title:"Troll", category:"accion", year:"2022", desc:"Un antiguo monstruo gigante despierta en las montañas de Noruega y un grupo de expertos debe detenerlo antes de que destruya todo a su paso." },
-      { title:"Troy", category:"drama", year:"2004", desc:"Épica histórica inspirada en la guerra entre griegos y troyanos a raíz del amor de Helena. Destaca por sus batallas, héroes y ambición trágica." },
-      { title:"True Spirit", category:"drama", year:"2023", desc:"Historia real de una adolescente australiana decidida a dar la vuelta al mundo en barco en solitario. Es un relato de valentía, sueño y perseverancia." },
-      { title:"Una pareja explosiva / Rush Hour", category:"accion", year:"Saga", desc:"Un inspector de Hong Kong y un hablador detective de Los Ángeles forman una pareja improbable para resolver casos. La saga destaca por humor, acción y química entre protagonistas." },
-      { title:"Uncharted", category:"accion", year:"2022", desc:"Nathan Drake es reclutado para encontrar un tesoro perdido hace siglos. Aventura de cazatesoros con acción, enigmas y espíritu de blockbuster." },
-      { title:"Up", category:"animacion", year:"2009", desc:"Un anciano ata miles de globos a su casa para viajar a Sudamérica y termina acompañado por un niño explorador. Es una aventura entrañable sobre duelo, esperanza y amistad." },
-      { title:"Venom", category:"marvel", year:"2018", desc:"Eddie Brock se fusiona con un simbionte alienígena que le otorga poderes extraordinarios y una personalidad salvaje. La película apuesta por una relación caótica entre anfitrión y criatura." },
-      { title:"Vivo", category:"animacion", year:"2021", desc:"Un kinkajú amante de la música emprende una aventura para entregar una canción muy especial. Es una propuesta animada centrada en música, cariño y memoria." },
-      { title:"WALL-E", category:"animacion", year:"2008", desc:"Un pequeño robot compactador de basura que vive solo en una Tierra abandonada se enamora de una moderna sonda espacial. Es una historia de amor, ecología y humanidad." },
-      { title:"Wifi Ralph", category:"animacion", year:"2018", desc:"Ralph y Vanellope entran en Internet en busca de una pieza para salvar un juego de arcade. La película mezcla aventura digital, amistad y referencias al mundo online." },
-      { title:"Wonder Woman 1984", category:"dc", year:"2020", desc:"Diana Prince se enfrenta a nuevos enemigos en plena Guerra Fría mientras lidia con deseos, pérdidas y consecuencias. Continúa la historia de la heroína dentro del universo DC." },
-      { title:"Yo antes de ti", category:"romance", year:"2016", desc:"Una joven alegre comienza a cuidar a un hombre rico que quedó paralítico tras un accidente. La película explora romance, decisiones difíciles y cambio vital." },
-      { title:"Zambezia", category:"animacion", year:"2012", desc:"Película animada ambientada en una vibrante ciudad de aves africanas donde un joven halcón emprende un viaje para descubrir su lugar en el mundo. Mezcla aventura, humor familiar y aprendizaje sobre comunidad, valentía y pertenencia." }
+      { title:"21 Jump Street", category:"accion", year:"2012", desc:"Dos policías poco astutos son enviados de encubierto a un instituto para desmantelar una red de drogas." },
+      { title:"22 Jump Street", category:"accion", year:"2014", desc:"Schmidt y Jenko vuelven a infiltrarse, esta vez en una universidad, para seguir el rastro de una nueva droga." },
+      { title:"50 Primeras Citas", category:"romance", year:"2004", desc:"Un veterinario marino se enamora de una mujer con amnesia a corto plazo y debe volver a conquistarla todos los días." },
+      { title:"50 Sombras de Grey", category:"romance", year:"2015", desc:"Anastasia Steele cambia su vida al conocer al enigmático Christian Grey." },
+      { title:"A Dos Metros de Ti", category:"romance", year:"2019", desc:"Dos adolescentes con fibrosis quística se enamoran en un hospital, obligados a mantener distancia física." },
+      { title:"After Earth", category:"accion", year:"2013", desc:"Padre e hijo quedan atrapados en una Tierra abandonada y peligrosa siglos después del éxodo humano." },
+      { title:"Aladdin", category:"animacion", year:"2019", desc:"Un joven callejero encuentra una lámpara mágica y trata de convertirse en príncipe." },
+      { title:"Ant-Man", category:"marvel", year:"2015", desc:"Scott Lang obtiene un traje capaz de reducir su tamaño mientras incrementa su fuerza." },
+      { title:"Ant-Man and the Wasp", category:"marvel", year:"2018", desc:"Scott Lang vuelve a unirse a Hope van Dyne para una nueva misión vinculada al Reino Cuántico." },
+      { title:"Ant-Man and the Wasp: Quantumania", category:"marvel", year:"2023", desc:"La familia de Scott Lang es arrastrada al Reino Cuántico y se enfrenta a Kang." },
+      { title:"Aquaman", category:"dc", year:"2018", desc:"Arthur Curry descubre su destino como heredero de Atlantis." },
+      { title:"Avengers", category:"marvel", year:"2012", desc:"Nick Fury reúne a los héroes más poderosos de la Tierra para detener a Loki." },
+      { title:"Avengers: Age of Ultron", category:"marvel", year:"2015", desc:"Los Vengadores luchan contra Ultron, una inteligencia artificial creada por Tony Stark." },
+      { title:"Avengers: Infinity War", category:"marvel", year:"2018", desc:"Los Vengadores y sus aliados intentan detener a Thanos antes de que destruya el universo." },
+      { title:"Avengers: Endgame", category:"marvel", year:"2019", desc:"Los héroes supervivientes intentan revertir la devastación causada por Thanos." },
+      { title:"Bad Boys for Life", category:"accion", year:"2020", desc:"Mike Lowrey y Marcus Burnett regresan para detener a un peligroso cartel." },
+      { title:"Black Adam", category:"dc", year:"2022", desc:"Un antiguo antihéroe con poderes divinos es liberado en la era moderna." },
+      { title:"Black Panther: Wakanda Forever", category:"marvel", year:"2022", desc:"Wakanda lucha por protegerse tras la muerte del rey T'Challa." },
+      { title:"Black Widow", category:"marvel", year:"2021", desc:"Natasha Romanoff se enfrenta a las partes más oscuras de su pasado." },
+      { title:"Cars", category:"animacion", year:"2006", desc:"Un coche de carreras arrogante aprende el valor de la amistad y la humildad." },
+      { title:"Captain America: Civil War", category:"marvel", year:"2016", desc:"El desacuerdo político sobre la supervisión de los héroes divide a los Vengadores." },
+      { title:"Captain America: The First Avenger", category:"marvel", year:"2011", desc:"Steve Rogers se convierte en el supersoldado Capitán América." },
+      { title:"Captain America: The Winter Soldier", category:"marvel", year:"2014", desc:"Steve Rogers destapa una conspiración dentro de S.H.I.E.L.D." },
+      { title:"Captain Marvel", category:"marvel", year:"2019", desc:"Carol Danvers se convierte en una de las heroínas más poderosas del universo." },
+      { title:"Coco", category:"animacion", year:"2017", desc:"Miguel viaja accidentalmente a la Tierra de los Muertos en busca de la verdad sobre su familia." },
+      { title:"Deadpool", category:"marvel", year:"2016", desc:"Wade Wilson se convierte en un antihéroe extremadamente violento y sarcástico." },
+      { title:"Deadpool & Wolverine", category:"marvel", year:"2024", desc:"Deadpool se une a Wolverine en una aventura de humor salvaje y violencia." },
+      { title:"Doctor Strange", category:"marvel", year:"2016", desc:"Un neurocirujano brillante descubre el mundo de las artes místicas." },
+      { title:"Doctor Strange in the Multiverse of Madness", category:"marvel", year:"2022", desc:"Doctor Strange viaja por el multiverso para proteger a América Chavez." },
+      { title:"Eternals", category:"marvel", year:"2021", desc:"Una raza de seres inmortales emerge para reaccionar ante una amenaza ancestral." },
+      { title:"Fast and Furious X", category:"accion", year:"2023", desc:"Dom Toretto y su familia se enfrentan al enemigo más letal que han conocido." },
+      { title:"Guardians of the Galaxy", category:"marvel", year:"2014", desc:"Un grupo de criminales intergalácticos termina salvando la galaxia." },
+      { title:"Guardians of the Galaxy Vol. 2", category:"marvel", year:"2017", desc:"Los Guardianes ayudan a Peter Quill a saber más sobre su padre." },
+      { title:"Guardians of the Galaxy Vol. 3", category:"marvel", year:"2023", desc:"El equipo se embarca en una peligrosa misión para salvar la vida de Rocket." },
+      { title:"Iron Man", category:"marvel", year:"2008", desc:"Tony Stark construye una armadura tecnológica y redefine su vida como héroe." },
+      { title:"Iron Man 2", category:"marvel", year:"2010", desc:"Tony Stark lidia con enemigos, política y el deterioro de su salud." },
+      { title:"Iron Man 3", category:"marvel", year:"2013", desc:"Tony Stark se enfrenta a un enemigo que destruye su mundo personal." },
+      { title:"John Wick", category:"accion", year:"Saga", desc:"Un legendario asesino retirado vuelve al inframundo criminal tras una tragedia personal." },
+      { title:"Lightyear", category:"animacion", year:"2022", desc:"Relata el origen del legendario Guardián Espacial que inspiró al juguete de Toy Story." },
+      { title:"Logan", category:"marvel", year:"2017", desc:"Un Wolverine envejecido protege a una joven mutante mientras cuida de un deteriorado Profesor X." },
+      { title:"Man of Steel", category:"dc", year:"2013", desc:"Clark Kent debe aceptar su identidad como Superman." },
+      { title:"Morbius", category:"marvel", year:"2022", desc:"Michael Morbius intenta curarse y termina transformándose en un vampiro viviente." },
+      { title:"Shazam!", category:"dc", year:"2019", desc:"Un adolescente obtiene el poder de transformarse en un superhéroe adulto." },
+      { title:"Shazam! Fury of the Gods", category:"dc", year:"2023", desc:"Billy Batson y su familia con poderes se enfrentan a las Hijas de Atlas." },
+      { title:"Spider-Man: Homecoming", category:"marvel", year:"2017", desc:"Peter Parker intenta equilibrar la vida escolar con su papel como Spider-Man." },
+      { title:"Spider-Man: No Way Home", category:"marvel", year:"2021", desc:"Un hechizo fallido abre las puertas del multiverso." },
+      { title:"The Batman", category:"dc", year:"2022", desc:"Batman investiga la corrupción en Gotham mientras persigue al Acertijo." },
+      { title:"The Guardians of the Galaxy Holiday Special", category:"marvel", year:"2022", desc:"Especial navideño donde los Guardianes viajan a la Tierra para sorprender a Peter Quill." },
+      { title:"The Lion King", category:"animacion", year:"2019", desc:"Un joven león huye de su hogar tras la muerte de su padre y aprende a aceptar su responsabilidad." },
+      { title:"Thor", category:"marvel", year:"2011", desc:"El arrogante dios del trueno es desterrado a la Tierra y debe aprender a ser un héroe." },
+      { title:"Thor: Love and Thunder", category:"marvel", year:"2022", desc:"Thor reúne aliados para enfrentarse a Gorr, el Carnicero de Dioses." },
+      { title:"Thor: Ragnarok", category:"marvel", year:"2017", desc:"Thor debe sobrevivir a un entorno gladiatorial y salvar Asgard." },
+      { title:"Thor: The Dark World", category:"marvel", year:"2013", desc:"Thor une fuerzas con Loki para salvar los Nueve Reinos." },
+      { title:"Toy Story", category:"animacion", year:"Saga", desc:"Los juguetes cobran vida cuando los humanos no miran." },
+      { title:"Venom", category:"marvel", year:"2018", desc:"Eddie Brock se fusiona con un simbionte alienígena que le otorga poderes extraordinarios." },
+      { title:"WALL-E", category:"animacion", year:"2008", desc:"Un pequeño robot compactador de basura se enamora de una sonda espacial." },
+      { title:"Wonder Woman 1984", category:"dc", year:"2020", desc:"Diana Prince enfrenta nuevos enemigos durante la Guerra Fría." },
+      { title:"Zambezia", category:"animacion", year:"2012", desc:"Película animada ambientada en una ciudad de aves africanas donde un joven halcón descubre su lugar en el mundo." }
     ];
+
+    const pages = [...document.querySelectorAll('.page')];
+    const pageButtons = [...document.querySelectorAll('.nav-page-btn')];
 
     const animeList = document.getElementById('animeList');
     const animeSearch = document.getElementById('animeSearch');
@@ -752,42 +984,58 @@
     const movieFilterButtons = [...document.querySelectorAll('.movie-filter')];
     let activeMovieFilter = 'all';
 
-    function seasonLabel(n){
-      return `${n} temporada${n > 1 ? 's' : ''}`;
-    }
-
-    function genreLabel(genre){
-      const labels = {
-        accion: 'Acción',
-        rpg: 'RPG',
-        simulacion: 'Simulación',
-        estrategia: 'Estrategia'
-      };
-      return labels[genre] || 'Juego';
-    }
-
-    function movieLabel(category){
-      const labels = {
-        marvel: 'Marvel',
-        dc: 'DC',
-        accion: 'Acción',
-        animacion: 'Animación',
-        romance: 'Romance',
-        comedia: 'Comedia',
-        drama: 'Drama'
-      };
-      return labels[category] || 'Película';
-    }
+    const globalSearch = document.getElementById('globalSearch');
+    const globalResultsSection = document.getElementById('globalResultsSection');
+    const globalResultsList = document.getElementById('globalResultsList');
+    const globalEmpty = document.getElementById('globalEmpty');
+    const globalStatus = document.getElementById('globalStatus');
+    const totalCount = document.getElementById('totalCount');
 
     function sortByTitle(arr){
       return [...arr].sort((a,b) => a.title.localeCompare(b.title, 'es', {sensitivity:'base'}));
     }
 
+    function seasonLabel(n){
+      return `${n} temporada${n > 1 ? 's' : ''}`;
+    }
+
+    function genreLabel(genre){
+      return { accion:'Acción', rpg:'RPG', simulacion:'Simulación', estrategia:'Estrategia' }[genre] || 'Juego';
+    }
+
+    function movieLabel(category){
+      return { marvel:'Marvel', dc:'DC', accion:'Acción', animacion:'Animación', romance:'Romance', comedia:'Comedia', drama:'Drama' }[category] || 'Película';
+    }
+
+    function showPage(name){
+      pages.forEach(page => page.classList.remove('active'));
+      const target = document.getElementById(`page-${name}`);
+      if(target) target.classList.add('active');
+
+      pageButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.page === name);
+      });
+
+      if(!globalSearch.value.trim()){
+        globalResultsSection.classList.remove('show');
+      }
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    pageButtons.forEach(btn => {
+      btn.addEventListener('click', () => showPage(btn.dataset.page));
+    });
+
+    document.getElementById('homeBrand').addEventListener('click', (e) => {
+      e.preventDefault();
+      showPage('inicio');
+    });
+
     function renderAnime(){
       const term = animeSearch.value.trim().toLowerCase();
       const filtered = sortByTitle(animeData).filter(item => {
-        const text = `${item.title} ${item.alt} ${item.desc}`.toLowerCase();
-        const textMatch = text.includes(term);
+        const hay = `${item.title} ${item.alt} ${item.desc}`.toLowerCase();
+        const textMatch = hay.includes(term);
         const seasonMatch =
           activeAnimeFilter === 'all' ? true :
           activeAnimeFilter === '1' ? item.seasons === 1 :
@@ -797,7 +1045,7 @@
       });
 
       animeList.innerHTML = filtered.map(item => `
-        <article class="entry reveal">
+        <article class="entry">
           <div class="meta">
             <span class="badge">Anime</span>
             <span class="badge">${seasonLabel(item.seasons)}</span>
@@ -807,22 +1055,20 @@
           <p class="desc">${item.desc}</p>
         </article>
       `).join('');
-
       animeEmpty.style.display = filtered.length ? 'none' : 'block';
-      observeReveals();
     }
 
     function renderGames(){
       const term = gameSearch.value.trim().toLowerCase();
       const filtered = sortByTitle(gamesData).filter(item => {
-        const text = `${item.title} ${item.genre} ${item.desc}`.toLowerCase();
-        const textMatch = text.includes(term);
+        const hay = `${item.title} ${item.genre} ${item.desc}`.toLowerCase();
+        const textMatch = hay.includes(term);
         const genreMatch = activeGameFilter === 'all' ? true : item.genre === activeGameFilter;
         return textMatch && genreMatch;
       });
 
       gamesList.innerHTML = filtered.map(item => `
-        <article class="entry reveal">
+        <article class="entry">
           <div class="meta">
             <span class="badge">Juego</span>
             <span class="badge">${genreLabel(item.genre)}</span>
@@ -832,22 +1078,20 @@
           <p class="desc">${item.desc}</p>
         </article>
       `).join('');
-
       gamesEmpty.style.display = filtered.length ? 'none' : 'block';
-      observeReveals();
     }
 
     function renderMovies(){
       const term = movieSearch.value.trim().toLowerCase();
       const filtered = sortByTitle(moviesData).filter(item => {
-        const text = `${item.title} ${item.category} ${item.desc} ${item.year}`.toLowerCase();
-        const textMatch = text.includes(term);
+        const hay = `${item.title} ${item.category} ${item.year} ${item.desc}`.toLowerCase();
+        const textMatch = hay.includes(term);
         const categoryMatch = activeMovieFilter === 'all' ? true : item.category === activeMovieFilter;
         return textMatch && categoryMatch;
       });
 
       moviesList.innerHTML = filtered.map(item => `
-        <article class="entry reveal">
+        <article class="entry">
           <div class="meta">
             <span class="badge">Película</span>
             <span class="badge">${movieLabel(item.category)}</span>
@@ -857,14 +1101,72 @@
           <p class="desc">${item.desc}</p>
         </article>
       `).join('');
-
       moviesEmpty.style.display = filtered.length ? 'none' : 'block';
-      observeReveals();
+    }
+
+    function renderGlobal(){
+      const term = globalSearch.value.trim().toLowerCase();
+
+      if(!term){
+        globalResultsSection.classList.remove('show');
+        globalResultsList.innerHTML = '';
+        globalEmpty.style.display = 'none';
+        globalStatus.textContent = 'Usa la barra superior para buscar en todo el catálogo.';
+        return;
+      }
+
+      const all = [
+        ...animeData.map(item => ({
+          section:'Anime',
+          badge:seasonLabel(item.seasons),
+          title:item.title,
+          sub:item.alt,
+          desc:item.desc,
+          search:`${item.title} ${item.alt} ${item.desc}`
+        })),
+        ...gamesData.map(item => ({
+          section:'Juego',
+          badge:genreLabel(item.genre),
+          title:item.title,
+          sub:'PC',
+          desc:item.desc,
+          search:`${item.title} ${item.genre} ${item.desc}`
+        })),
+        ...moviesData.map(item => ({
+          section:'Película',
+          badge:movieLabel(item.category),
+          title:item.title,
+          sub:item.year,
+          desc:item.desc,
+          search:`${item.title} ${item.category} ${item.year} ${item.desc}`
+        }))
+      ];
+
+      const filtered = sortByTitle(all).filter(item =>
+        item.search.toLowerCase().includes(term)
+      );
+
+      globalResultsSection.classList.add('show');
+      globalStatus.textContent = `Resultados globales para “${term}”: ${filtered.length}`;
+      globalEmpty.style.display = filtered.length ? 'none' : 'block';
+
+      globalResultsList.innerHTML = filtered.map(item => `
+        <article class="entry">
+          <div class="meta">
+            <span class="badge">${item.section}</span>
+            <span class="badge">${item.badge}</span>
+          </div>
+          <h3>${item.title}</h3>
+          <p class="alt">${item.sub}</p>
+          <p class="desc">${item.desc}</p>
+        </article>
+      `).join('');
     }
 
     animeSearch.addEventListener('input', renderAnime);
     gameSearch.addEventListener('input', renderGames);
     movieSearch.addEventListener('input', renderMovies);
+    globalSearch.addEventListener('input', renderGlobal);
 
     animeFilterButtons.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -896,27 +1198,12 @@
     animeCount.textContent = animeData.length;
     gamesCount.textContent = gamesData.length;
     moviesCount.textContent = moviesData.length;
-
-    document.getElementById('printBtn').addEventListener('click', () => window.print());
-
-    function observeReveals(){
-      const elements = document.querySelectorAll('.reveal:not(.in)');
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if(entry.isIntersecting){
-            entry.target.classList.add('in');
-            io.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.12 });
-
-      elements.forEach(el => io.observe(el));
-    }
+    totalCount.textContent = animeData.length + gamesData.length + moviesData.length;
 
     renderAnime();
     renderGames();
     renderMovies();
-    observeReveals();
+    renderGlobal();
   </script>
 </body>
 </html>
